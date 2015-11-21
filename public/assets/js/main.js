@@ -1,17 +1,37 @@
 console.log("HELLO I AM HERE (main.js)");
 
+// Instantiate new game!
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game-container');
 
+// ---------- Plugins -----------
+this.game.kineticScrolling = this.game.plugins.add(Phaser.Plugin.KineticScrolling);
+this.game.kineticScrolling.configure({
+    kineticMovement: true,
+    timeConstantScroll: 325, //really mimic iOS
+    horizontalScroll: true,
+    verticalScroll: true,
+    horizontalWheel: true,
+    verticalWheel: false,
+    deltaWheel: 40
+});
+
+// ---------- Debuggin' ---------- 
+
 var characters;
+
+// ---------- Game States ---------- 
 
 var setUpGame = {
     preload: function() {
       // load any needed images/data
       game.load.image('person', 'assets/images/person.png');
+      game.load.image('b', 'assets/images/person.png');
       game.load.image('modal_bg', 'assets/images/modal_bg.png');
       game.load.image('tweet_bg', 'assets/images/tweet_bg.png');
       game.load.image('indicator', 'assets/images/indicator.png');
       game.load.text('char_data', 'assets/data/characters.json');
+      game.gameData = {};
+      game.gameData.charNames = [];
       // Set up timer here?
     },
     create: function() {
@@ -53,24 +73,25 @@ var setUpGame = {
     }
   }
 
+// ---------- Function Definitions ---------- 
+// Todo - modularize
+
 // Add single tweet to char's current tweets
 function addTweet(character) {
   switch (character.depressed) {
     case true:
       if (character.data.tweets.sad.length < 1) return;
-      var randIdx = Math.floor(Math.random() * character.data.tweets.sad.length);
-      randomTweet = character.data.tweets.sad.splice(randIdx, 1)[0];
-      character.currentTweets.push(randomTweet);
+      nextTweet = character.data.tweets.sad.shift();
+      character.currentTweets.push(nextTweet);
       break;
     default:
       if (character.data.tweets.neutral.length < 1) return;
-      var randIdx = Math.floor(Math.random() * character.data.tweets.neutral.length);
-      randomTweet = character.data.tweets.neutral.splice(randIdx, 1)[0];
-      character.currentTweets.push(randomTweet);
+      nextTweet = character.data.tweets.neutral.shift();
+      character.currentTweets.push(nextTweet);
   }
   // show new tweet indicator if not already shown
   showIndicator(character);
-  // Set a time for the next tweet to pop up - between two & fifteen seconds
+  // Set a time for the next tweet to pop up - between two & seventeen seconds
   var nextTweetDelay = Math.round(2 + Math.random() * 15) * 1000;
   // call the addTweet function again on a delay
   game.time.events.add(nextTweetDelay, addTweet, this, character);
@@ -98,8 +119,8 @@ function showTweets(character) {
   tweetBg.anchor.set(0.5);
   // Font styles for twitter handle!
   var twitterHandleStyle = {
-    font: "bold 32px Arial",
-    fill: "#369"
+    font: 'bold 32px Arial',
+    fill: '#369',
   };
   // add txt
   var twitterHandle = game.add.text(game.world.centerX, 100, character.data.twitterHandle, twitterHandleStyle);
@@ -108,21 +129,17 @@ function showTweets(character) {
   // create group to hold all rendered tweets
   var tweetsContainer = game.add.group();
 
-  var tweetStyle = {font: "20px Helvetica"};
+  var tweetStyle = {
+    font: "14px Helvetica",
+    align: 'left',
+    wordWrap: true, 
+    wordWrapWidth: 550
+  };
   character.currentTweets.forEach(function(tweet, idx) {
-    var tweetText = game.add.text(game.world.centerX, 200 + 100 * idx, tweet, tweetStyle);
-    tweetText.anchor.set(0.5);
+    var tweetText = game.add.text(125, 150 + 75 * idx, tweet, tweetStyle);
     tweetsContainer.add(tweetText);
   });
-
-  console.log(character.currentTweets);
   // Add magical girl wand
-
-  // Add our stuffs to the group
-  tweetView.add(modalBg);
-  tweetView.add(tweetBg);
-  tweetView.add(twitterHandle);
-  tweetView.add(tweetsContainer);
 
   // Setting up modal to have "click out of meee" functionality
   modalBg.inputEnabled = true;
@@ -130,11 +147,15 @@ function showTweets(character) {
     modalBg.parent.removeAll(true);
   }, this);
 
+  // Add all components to the tweetView group
+  tweetView.add(modalBg);
+  tweetView.add(tweetBg);
+  tweetView.add(twitterHandle);
+  tweetView.add(tweetsContainer);
+
 }
 
+// ---------- Game State Setup & GO! ---------- 
 
-// need intial game state to determine depressed person
-// Need to save this to a currentGameData var or something. Hmm.
 game.state.add('play-game', setUpGame);
-
 game.state.start('play-game');
