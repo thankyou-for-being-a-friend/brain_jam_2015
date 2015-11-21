@@ -1,74 +1,85 @@
-[
-
-	{
-		"charName" : "Dorothy",
-		"charImage" : "assets/images/dorothyTest.jpeg",
-		"charCoordinates" : {"x": 10, "y": 10},
-		"charTwitter" : "dorothyTweets",
-		"charLikes" : ["cats", "Tom Hiddleston"],
-
-		"profileImage" : "assets/images/dorothyTest.jpeg",
-		"profileBio" : "This is Dorothy's bio text.",
-
-		"tweetNeutral" : ["Neutral Tweet 1", "Neutral Tweet 2", "Neutral Tweet 3"],
-		"tweetSad" : ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
-
-		"respNo" : ["Why are you tweeting me all this random stuff?"],
-		"respWrongGifs" : ["You know I like cats better!"],
-		"respCorrect" : ["Thanks for sending me happy gifs!"],
+[{
+	"depressed": false,
+	"name": "Dorothy",
+	"imageUrl": "assets/images/dorothyTest.jpeg",
+	"coords": {
+		"x": 10,
+		"y": 10
 	},
-
-	{
-		"charName" : "Rose",
-		"charImage" : "assets/images/roseTest.jpeg",
-		"charCoordinates" : {"x": 100, "y": 10},
-		"charTwitter" : "roseTweets",
-		"charLikes" : ["puppies", "Chris Hemsworth"],
-
-		"profileImage" : "assets/images/roseTest.jpeg",
-		"profileBio" : "This is Rose's bio text.",
-
-		"tweetNeutral" : ["Neutral Tweet 1", "Neutral Tweet 2", "Neutral Tweet 3"],
-		"tweetSad" : ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
-
-		"respNo" : ["Why are you tweeting me all this random stuff?"],
-		"respWrongGifs" : ["You know I like puppies better!"],
-		"respCorrect" : ["Thanks for sending me happy gifs!"],
+	"twitterHandle": "dorothyTweets",
+	"likes": ["cats", "Tom Hiddleston"],
+	"avatarImg": "assets/images/dorothyTest.jpeg",
+	"bio": "This is Dorothy's bio text.",
+	"tweets": {
+		"neutral": [
+			"Neutral Tweet 1",
+			"Neutral Tweet 2",
+			"Neutral Tweet 3"
+		],
+		"sad": [
+			"Sad Tweet 1",
+			"Sad Tweet 2",
+			"Sad Tweet 3"
+		],
+		"unnecessary": ["Why are you tweeting me all this random stuff?"],
+		"wrongGifs": ["You know I like cats better!"],
+		"correct": ["Thanks for sending me happy gifs!"]
+	}
+}, {
+	"depressed": false,
+	"name": "Rose",
+	"imageUrl": "assets/images/roseTest.jpeg",
+	"coords": {
+		"x": 100,
+		"y": 10
 	},
-
-	{
-		"charName" : "Blanche",
-		"charImage" : "assets/images/blancheTest.jpeg",
-		"charCoordinates" : {"x": 200, "y": 10},
-		"charTwitter" : "blancheTweets",
-		"charLikes" : ["ducklings", "Chris Evans"],
-
-		"profileImage" : "assets/images/blancheTest.jpeg",
-		"profileBio" : "This is Blanche's bio text.",
-
-		"tweetNeutral" : ["Neutral Tweet 1", "Neutral Tweet 2", "Neutral Tweet 3"],
-		"tweetSad" : ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
-
-		"respNo" : ["Why are you tweeting me all this random stuff?"],
-		"respWrongGifs" : ["You know I like ducklings better!"],
-		"respCorrect" : ["Thanks for sending me happy gifs!"],
+	"twitterHandle": "roseTweets",
+	"likes": ["puppies", "Chris Hemsworth"],
+	"avatarImg": "assets/images/roseTest.jpeg",
+	"bio": "This is Rose's bio text.",
+	"tweets": {
+		"neutral": ["Neutral Tweet 1", "Neutral Tweet 2", "Neutral Tweet 3"],
+		"sad": ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
+		"unnecessary": ["Why are you tweeting me all this random stuff?"],
+		"wrongGifs": ["You know I like puppies better!"],
+		"correct": ["Thanks for sending me happy gifs!"]
+	}
+}, {
+	"depressed": false,
+	"name": "Blanche",
+	"imageUrl": "assets/images/blancheTest.jpeg",
+	"coords": {
+		"x": 200,
+		"y": 10
 	},
-
-	{
-		"charName" : "Sophia",
-		"charImage" : "assets/images/sophiaTest.jpeg",
-		"charCoordinates" : {"x": 300, "y": 10},
-		"charTwitter" : "sophiaTweets",
-		"charLikes" : ["bunnies", "Scarlett Johannson"],
-
-		"profileImage" : "assets/images/sophiaTest.jpeg",
-		"profileBio" : "This is Sophia's bio text.",
-
-		"tweetNeutral" : ["Neutral Tweet 1", "Neutral Tweet 2", "Neutral Tweet 3"],
-		"tweetSad" : ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
-
-		"respNo" : ["Why are you tweeting me all this random stuff?"],
-		"respWrongGifs" : ["You know I like bunnies better!"],
-		"respCorrect" : ["Thanks for sending me happy gifs!"],
+	"twitterHandle": "blancheTweets",
+	"likes": ["ducklings", "Chris Evans"],
+	"avatarImg": "assets/images/blancheTest.jpeg",
+	"bio": "This is Blanche's bio text.",
+	"tweets": {
+		"neutral": ["Neutral Tweet 1", "Neutral Tweet 2", "Neutral Tweet 3"],
+		"sad": ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
+		"unnecessary": ["Why are you tweeting me all this random stuff?"],
+		"wrongGifs": ["You know I like ducklings better!"],
+		"correct": ["Thanks for sending me happy gifs!"]
+	}
+}, {
+	"depressed": false,
+	"name": "Sophia",
+	"imageUrl": "assets/images/sophiaTest.jpeg",
+	"coords": {
+		"x": 300,
+		"y": 10
 	},
-]
+	"twitterHandle": "sophiaTweets",
+	"likes": ["bunnies", "Scarlett Johannson"],
+	"avatarImg": "assets/images/sophiaTest.jpeg",
+	"bio": "This is Sophia's bio text.",
+	"tweets": {
+		"neutral": ["Neutral Tweet 1", "Neutral Tweet 2", "Neutral Tweet 3"],
+		"sad": ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
+		"unnecessary": ["Why are you tweeting me all this random stuff?"],
+		"wrongGifs": ["You know I like bunnies better!"],
+		"correct": ["Thanks for sending me happy gifs!"]
+	}
+}]
