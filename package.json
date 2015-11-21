@@ -1,0 +1,23 @@
+{
+  "name": "thankyou",
+  "version": "1.0.0",
+  "description": "Friendship game!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/annarankin/brain_jam_2015.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/annarankin/brain_jam_2015/issues"
+  },
+  "homepage": "https://github.com/annarankin/brain_jam_2015#readme",
+  "dependencies": {
+    "ejs": "^2.3.4",
+    "express": "^4.13.3"
+  }
+}

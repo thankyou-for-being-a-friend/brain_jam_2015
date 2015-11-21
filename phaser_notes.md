@@ -1,6 +1,8 @@
 # Phaser Notes!
 
-### Pieces of Phaser We'll Probs Need
+Inital impressions from reading through the Phaser docs prior to getting started on the codestuffs
+
+### Pieces of Phaser We'll Probably Need
 
 #### Major Pieces
 
@@ -11,7 +13,7 @@
 
 #### Game States
 
-#### `Loader`
+#### Loader
 
 - For caching images, sound, data
 
@@ -61,9 +63,28 @@
 
 ### Math
 
-- `RandomDataGenerator` - innnteresting! Possibly good for pseudo-rando tweets
+- `RandomDataGenerator` - innnteresting! Possibly good for pseudo-rando tweets?
 
 ### Network
 
 - `Net` - Redirect to tumblr?
+
+### Particles
+
+- Could use an emitter for magical girl wand
+
+### Input
+
+- Event listeners for pointers, keys, mouse, etc
+
+### Sound
+
+- Includes a `SoundManager` and `Sound`s!
+
+
+### Utils
+
+- Enhanced Array class(`ArraySet`), Color, Debug, etc.
+
+---
 
