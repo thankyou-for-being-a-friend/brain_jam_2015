@@ -1,0 +1,74 @@
+[
+
+	{
+		"charName" : "Dorothy",
+		"charImage" : "assets/images/dorothyTest.jpeg",
+		"charCoordinates" : {"x": 10, "y": 10},
+		"charTwitter" : "dorothyTweets",
+		"charLikes" : ["cats", "Tom Hiddleston"],
+
+		"profileImage" : "assets/images/dorothyTest.jpeg",
+		"profileBio" : "This is Dorothy's bio text.",
+
+		"tweetNeutral" : ["Neutral Tweet 1", "Neutral Tweet 2", "Neutral Tweet 3"],
+		"tweetSad" : ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
+
+		"respNo" : ["Why are you tweeting me all this random stuff?"],
+		"respWrongGifs" : ["You know I like cats better!"],
+		"respCorrect" : ["Thanks for sending me happy gifs!"],
+	},
+
+	{
+		"charName" : "Rose",
+		"charImage" : "assets/images/roseTest.jpeg",
+		"charCoordinates" : {"x": 100, "y": 10},
+		"charTwitter" : "roseTweets",
+		"charLikes" : ["puppies", "Chris Hemsworth"],
+
+		"profileImage" : "assets/images/roseTest.jpeg",
+		"profileBio" : "This is Rose's bio text.",
+
+		"tweetNeutral" : ["Neutral Tweet 1", "Neutral Tweet 2", "Neutral Tweet 3"],
+		"tweetSad" : ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
+
+		"respNo" : ["Why are you tweeting me all this random stuff?"],
+		"respWrongGifs" : ["You know I like puppies better!"],
+		"respCorrect" : ["Thanks for sending me happy gifs!"],
+	},
+
+	{
+		"charName" : "Blanche",
+		"charImage" : "assets/images/blancheTest.jpeg",
+		"charCoordinates" : {"x": 200, "y": 10},
+		"charTwitter" : "blancheTweets",
+		"charLikes" : ["ducklings", "Chris Evans"],
+
+		"profileImage" : "assets/images/blancheTest.jpeg",
+		"profileBio" : "This is Blanche's bio text.",
+
+		"tweetNeutral" : ["Neutral Tweet 1", "Neutral Tweet 2", "Neutral Tweet 3"],
+		"tweetSad" : ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
+
+		"respNo" : ["Why are you tweeting me all this random stuff?"],
+		"respWrongGifs" : ["You know I like ducklings better!"],
+		"respCorrect" : ["Thanks for sending me happy gifs!"],
+	},
+
+	{
+		"charName" : "Sophia",
+		"charImage" : "assets/images/sophiaTest.jpeg",
+		"charCoordinates" : {"x": 300, "y": 10},
+		"charTwitter" : "sophiaTweets",
+		"charLikes" : ["bunnies", "Scarlett Johannson"],
+
+		"profileImage" : "assets/images/sophiaTest.jpeg",
+		"profileBio" : "This is Sophia's bio text.",
+
+		"tweetNeutral" : ["Neutral Tweet 1", "Neutral Tweet 2", "Neutral Tweet 3"],
+		"tweetSad" : ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
+
+		"respNo" : ["Why are you tweeting me all this random stuff?"],
+		"respWrongGifs" : ["You know I like bunnies better!"],
+		"respCorrect" : ["Thanks for sending me happy gifs!"],
+	},
+]
