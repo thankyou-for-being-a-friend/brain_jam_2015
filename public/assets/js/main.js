@@ -28,6 +28,7 @@ var setup = {
     game.load.image('modal_bg', 'assets/images/modal_bg.png');
     game.load.image('tweet_bg', 'assets/images/tweet_bg.png');
     game.load.image('left-menu', 'assets/images/left_menu.png');
+    game.load.image('tweet_box', 'assets/images/structure/tweet_box.png');
     
     game.load.image('blanche', 'assets/images/gg1/GG1.png');
     game.load.image('dorothy', 'assets/images/gg2/GG2.png');
@@ -109,6 +110,7 @@ var stageTwo = {
       "whatever",
       "whatever"
     ]
+    game.gameData.clickCounter = 0;
   },
   create: function() {
     // Create the game board!
@@ -192,15 +194,28 @@ var stageTwo = {
 // ---------- Function Definitions ---------- 
 // Todo - get these outta this file IT'S SO MESSY OH GAWD
 
+function showResponse(character, depressed, likesCategory) {
+  if (!depressed) {
+    console.log(character.data.tweets.unnecessary[0]);
+  } else if (depressed && !likesCategory) {
+    console.log(character.data.tweets.wrongGifs[0]);
+  } else {
+    console.log(character.data.tweets.correct[0]);
+  }
+}
+
 function attackWithGif(character) {
   var fairySound = game.add.sound('fairy_wand', 0.5);
   fairySound.play();
+  game.gameData.clickCounter++;
   // Check to see if chosen character likes this gif!
   if (!game.gameData.chosenCharacter.data.depressed) {
-    console.log('I\'m not even sad.');
+    // Args: showResponse(character, depressed[, likesCategory])
+    showResponse(game.gameData.chosenCharacter, false);
     return;
   }
-  console.log(game.gameData.chosenCharacter.data.likes.indexOf(game.gameData.chosenCategory.catName) > -1 || game.gameData.chosenCategory.catName === 'whatever' ? "I like that!" : "I don't like that.");
+
+  console.log(game.gameData.chosenCharacter.data.likes.indexOf(game.gameData.chosenCategory.catName) > -1 || game.gameData.chosenCategory.catName === 'whatever' ? showResponse(game.gameData.chosenCharacter, true, true) : showResponse(game.gameData.chosenCharacter, true, false));
 }
 
 function categoryBtnClick(category) {
