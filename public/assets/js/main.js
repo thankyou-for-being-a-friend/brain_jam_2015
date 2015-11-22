@@ -53,6 +53,7 @@ var setup = {
     game.load.audio('attack', 'assets/audio/BrainJam_Dogs_GIF.wav');
     // music
     game.load.audio('stage_one', 'assets/audio/ambient_stage_one.wav');
+    game.load.audio('stage_two', 'assets/audio/friendship_attack.wav');
     // game.load.audio('stage_two', 'assets/audio/BrainJam_Fairy_Wand.wav');
 
     // data
@@ -75,6 +76,11 @@ var setup = {
 }
 
 var stageOne = {
+  preload: function() {
+    if (game.gameData.stageTwoMusic) {
+      game.gameData.stageTwoMusic.fadeOut(1000);
+    }
+  },
   create: function() {
     // Play stage one music!
     game.gameData.stageOneMusic = game.add.audio('stage_one');
@@ -131,14 +137,14 @@ var stageTwo = {
       "whatever"
     ]
     game.gameData.stageOneMusic.fadeOut(1000);
-
     // Create group with high z-index to keep cursor on top
     game.gameData.cursorGroup = game.add.group();
     // game.gameData.cursorGroup.bringToTop()
   },
   create: function() {
     // Play stage two music!
-
+    game.gameData.stageTwoMusic = game.add.audio('stage_two');
+    game.gameData.stageTwoMusic.fadeIn(1000);
     // Create the game board!
     var leftMenuGroup = game.add.group();
     // make a rectangle for the lefthand menu
