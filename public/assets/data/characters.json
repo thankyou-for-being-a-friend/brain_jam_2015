@@ -23,18 +23,24 @@
 			"RT Treefellow to Run Again for 2068 http://www.5z8.info/stalin_evbv #Treefellow2068 #trytryagain"
 		],
 		"sad": [
-			"Sad Tweet 1",
-			"Sad Tweet 2",
-			"Sad Tweet 3"
+			"RT Insurance Coverage Gaps for America’s Senior Citizens http://www.5z8.info/super-nsfw_giau #relevant #news",
+			"We expect so many people to just help themselves on every front no matter what the circumstances.",
+			"Are there more people that believe in looking out for one another still out there somewhere; a think piece to be written 40 years from now.",
+			"Which will be a great help then.",
+			"RT Continued Health Cost Surges as Hospitals Lack Enough Doctors http://www.5z8.info/add-worm_jjtp",
+			"RT Illness Impasse: Recognizing Today’s Patient Expectations http://www.5z8.info/dogfights_kuoj",
+			"Re: LRT - Former colleague of mine hitting on a topic that hits close to home.",
+			"Over that hill, down that hill, full speed, yipee."
 		],
-		"unnecessary": ["Why are you tweeting me all this random stuff?"],
-		"wrongGifs": ["You know I like cats better!"],
-		"correct": ["Thanks for sending me happy gifs!"]
+		"unnecessary": ["@You I don’t think this is working the way you think it is."],
+		"wrongGifs": ["@You I appreciate the thought, but those just aren’t doing it for me."
+],
+		"correct": ["@You This month has been hard. Got time for a long rant and two cups of coffee?"]
 	}
 }, {
 	"depressed": false,
 	"name": "Rose",
-	"imgKey": "person",
+	"imgKey": "rose",
 	"imageUrl": "assets/images/roseTest.jpeg",
 	"coords": {
 		"x": 100,
@@ -55,10 +61,19 @@
 			"@dorothyzbornak I think Blanche wants to get a dog. Can we, can we???",
 			"Oh and don’t forget this one! Q: What is the only kind of dog you can eat?  A: A hot dog!"
 		],
-		"sad": ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
-		"unnecessary": ["Why are you tweeting me all this random stuff?"],
-		"wrongGifs": ["You know I like puppies better!"],
-		"correct": ["Thanks for sending me happy gifs!"]
+		"sad": [
+			"Oh boy, there’s going to be so many of you at the #stolaf50reunion2065! It’ll be just like old times!",
+			"So many of you will have so many stories about everything you’ve been doing! #stolaf50reunion2065",
+			"It’ll be a great time! Old friends seeing each other again, well that’s wonderful.",
+			"I know I have been waiting 50 whole years for #stolaf50reunion2065! I guess we all have! =)",
+			"I’ll have lots to talk about too. I’ve been up to plenty of things over the years. Well sure just way too much to fit into one night! =)))",
+			"A lot of people remember me so well! Well that’s swell! Haha! Sure a bunch of great stories!",
+			"Oh no! I forgot to check on flight ticket prices. Oh dear, I wonder if I can still go? #stolaf50reunion2065 Airhead Rosey strikes again! =)",
+			"No no, this is on Space Cadet Rose haha! Thank you for offering to help, I’ll be ok! I’m sure I’ll make it #stolaf50reunion2065 =)))"
+		],
+		"unnecessary": ["@You Are you ok? Here I found a good joke for you: Q: What do you call a cold dog? A: A Chilli Dog. Oh no. Wait. Aren’t Chilli dogs hot?"],
+		"wrongGifs": ["@You Oh those are nice! Do you have any others?"],
+		"correct": ["@You I don’t think I want to go to Saint Olaf anymore. Can we talk a little?"]
 	}
 }, {
 	"depressed": false,
@@ -84,10 +99,19 @@
 			"OH! THAT’S CLOSE TO HERE! @dorothyzbornak Let’s get a puppy. RT Mark Fischbach to open animal rescue in FL - http://www.5z8.info/bomb_kqxb",
 			"YES YES YESSS (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ RT Daniel Radcliffe to star in new bank heist movie “Fastcatch Fever” http://www.5z8.info/foodporn_joyl"
 		],
-		"sad": ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
-		"unnecessary": ["Why are you tweeting me all this random stuff?"],
-		"wrongGifs": ["You know I like ducklings better!"],
-		"correct": ["Thanks for sending me happy gifs!"]
+		"sad": [
+			"I’m always amazed at how gorgeous Jennifer Lawrence still is, my goodness! (⊙‿⊙✿) #ladycrush #cantavoidit",
+			"That’s not weird is it @roseycheeks? #lol",
+			"The Jennifer thing @roseycheeks #lol #lol",
+			"Fweeting not just about gorgeous men, but that is what I’m most obsessed with of course! How could anyone doubt ★~(◠﹏◕✿)",
+			"So many beautiful pictures today in my feed! No one classier than Emma Watson, just flawless flawless. (⊙‿⊙✿) Jea~lousss #lol!",
+			"omg @roseycheeks telling me that I can’t stop talking about J Law; the nerve! #lol #lol (✿◠‿◠) Stop it!",
+			"There is nothing odd about admiring another woman, and wondering if they’ve been stealing all my beauty secrets~~ (◡‿◡✿) #flawless",
+			"Oh my goodness there’s too much news to catch up on! I don’t think I’ll be able to pick out the best of the best today! #VACAY #Breaktime <3"		
+		],
+		"unnecessary": ["@You Dear, I just don’t know why you’re sending me this? ★~(◡﹏◡✿)"],
+		"wrongGifs": ["@You These are nice but you this just isn’t my cup of tea, dear (◕ㅅ◕✿)"],
+		"correct": ["@You Let’s get a cup of coffee. I just feel... feel like... like I have so much to catch up on with you! Yes. Let’s do that."]
 	}
 }, {
 	"depressed": false,
@@ -113,9 +137,18 @@
 			"@dorothyzbornak No.",
 			"@roseycheeks Why?"
 		],
-		"sad": ["Sad Tweet 1", "Sad Tweet 2", "Sad Tweet 3"],
-		"unnecessary": ["Why are you tweeting me all this random stuff?"],
-		"wrongGifs": ["You know I like bunnies better!"],
-		"correct": ["Thanks for sending me happy gifs!"]
+		"sad": [
+			"Music too loud you can’t hear yourself or anyone else think! Good! :D",
+			"I do care about Dorothy a lot, but she needs to lighten up! Dance more! Sing a little! Actually not that, she’s terrible at that.",
+			"It can’t be easy being only a little over twenty something years younger than your ma after you hit fifty.",
+			"…",
+			"If it’s not one thing it’s another, I bet they didn’t even notice I left the milk out. Left it out for two days :D They’ll notice that soon!",
+			"Hey kiddo, I love you. @dorothyzbornak",
+			"… if we do get a dog I hope it’s a young pup. That’ll drive them all crazy :D Running around the house, destroying everything for 15 years",
+			"Won’t be my problem for even half that amount of time. I win!"
+		],
+		"unnecessary": ["@You There’s a Shut Up Train rolling into the station! It’s got room for one more! Toot toooot (stop it)"],
+		"wrongGifs": ["@You These gifs are, to quote my mother, “whack”"],
+		"correct": ["@You I think I should get out of this room. Let’s go for a walk together, kid."]
 	}
 }]
