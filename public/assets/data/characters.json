@@ -1,6 +1,7 @@
 [{
 	"depressed": false,
 	"name": "Dorothy",
+	"imgKey": "dorothy",
 	"imageUrl": "assets/images/dorothyTest.jpeg",
 	"coords": {
 		"x": 10,
@@ -33,6 +34,7 @@
 }, {
 	"depressed": false,
 	"name": "Rose",
+	"imgKey": "person",
 	"imageUrl": "assets/images/roseTest.jpeg",
 	"coords": {
 		"x": 100,
@@ -61,6 +63,7 @@
 }, {
 	"depressed": false,
 	"name": "Blanche",
+	"imgKey": "blanche",
 	"imageUrl": "assets/images/blancheTest.jpeg",
 	"coords": {
 		"x": 200,
@@ -89,6 +92,7 @@
 }, {
 	"depressed": false,
 	"name": "Sophia",
+	"imgKey": "person",
 	"imageUrl": "assets/images/sophiaTest.jpeg",
 	"coords": {
 		"x": 300,
