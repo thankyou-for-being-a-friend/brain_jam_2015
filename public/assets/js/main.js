@@ -52,6 +52,7 @@ var setup = {
     // gif attacks!!
     game.load.audio('attack', 'assets/audio/BrainJam_Dogs_GIF.wav');
     // music
+
     game.load.audio('stage_one', 'assets/audio/ambient_stage_one.wav');
     // game.load.audio('stage_two', 'assets/audio/BrainJam_Fairy_Wand.wav');
 
@@ -75,6 +76,7 @@ var setup = {
 }
 
 var stageOne = {
+  // Play stage one music!
   create: function() {
     // Play stage one music!
     game.gameData.stageOneMusic = game.add.audio('stage_one');
@@ -137,6 +139,7 @@ var stageTwo = {
   },
   create: function() {
     // Play stage two music!
+
     // Create the game board!
     var leftMenuGroup = game.add.group();
     // make a rectangle for the lefthand menu
@@ -262,6 +265,7 @@ function showResponse(character, depressed, likesCategory) {
       // Start shooting gifs! Shoot for 3 - 5 seconds
     var attackMusic = game.add.audio('attack');
     attackMusic.play();
+
     var shootGifsTimer = game.time.events.repeat(100, 20, animateSquare, this);
 
     // After timer event completes looping, display "not depressed" fail message
