@@ -19,13 +19,14 @@ var setup = {
     // load any needed images/data
     // Generic person placeholder
     game.load.image('person', 'assets/images/person.png');
-    // JUST RECTANGLES
-    game.load.image('cat1', 'assets/images/cat1.png');
-    game.load.image('cat2', 'assets/images/cat2.png');
-    game.load.image('cat3', 'assets/images/cat3.png');
-    game.load.image('cat4', 'assets/images/cat4.png');
-    game.load.image('cat5', 'assets/images/cat5.png');
-    game.load.image('cat6', 'assets/images/cat6.png');
+
+    // categories
+    game.load.image('politics', 'assets/images/giphy-politics.gif');
+    game.load.image('dogs', 'assets/images/giphy-dogs.gif');
+    game.load.image('celebrities', 'assets/images/giphy-celeb.gif');
+    game.load.image('cheetahs', 'assets/images/giphy-cheetah.gif');
+    game.load.image('missy elliot', 'assets/images/giphy-missy.gif');
+    game.load.image('robots', 'assets/images/giphy-robots.gif');
     // Indicators/cursors/etc
     game.load.spritesheet('wand', 'assets/images/magic_girl_wand.png', 128, 128, 1);
     game.load.image('indicator', 'assets/images/indicator.png');
@@ -40,11 +41,18 @@ var setup = {
     game.load.image('blanche', 'assets/images/gg1/GG1.png');
     game.load.image('dorothy', 'assets/images/gg2/GG2.png');
     game.load.image('rose', 'assets/images/gg3/gg3.png');
+
     // Lady sprites <3
     game.load.spritesheet('blanche_sprite', 'assets/images/gg1/gg1_sprite.png', 559, 625, 2);
     game.load.spritesheet('dorothy_sprite', 'assets/images/gg2/gg2_sprite.png', 343, 660, 2);
     game.load.spritesheet('rose_sprite', 'assets/images/gg3/gg3_sprite.png', 409, 647, 2);
     game.load.spritesheet('person_sprite', 'assets/images/person_sprite.png', 237, 519, 2);
+    // lady win music
+    game.load.audio('win_blanche', 'assets/audio/BrainJam_StartTheme_Entertainment_Tonight.mp3');
+    game.load.audio('win_dorothy', 'assets/audio/BrainJam_WinTheme_FoxNews.mp3');
+    game.load.audio('win_rose', 'assets/audio/BrainJam_WinTheme_KeepingUp.mp3');
+    game.load.audio('win_person', 'assets/audio/BrainJam_WinTheme_MissyElliot.mp3');
+
     //sfx
     game.load.audio('fairy_wand', 'assets/audio/BrainJam_Fairy_Wand.wav');
     game.load.audio('pop', 'assets/audio/BrainJam_Pop.wav');
@@ -53,13 +61,19 @@ var setup = {
     game.load.audio('attack', 'assets/audio/BrainJam_Dogs_GIF.wav');
     // music
     game.load.audio('stage_one', 'assets/audio/ambient_stage_one.wav');
+    game.load.audio('stage_two', 'assets/audio/friendship_attack.wav');
     // game.load.audio('stage_two', 'assets/audio/BrainJam_Fairy_Wand.wav');
 
     // data
+    if (!game.gameData) {
+      game.gameData = {};
+    };
     game.load.text('char_data', 'assets/data/characters.json');
-    game.gameData = {};
   },
   create: function() {
+    if (game.gameData.stageTwoMusic) {
+      game.gameData.stageTwoMusic.fadeOut(1000);
+    }
     // pull in data from cache & parse from JSON to object
     charData = JSON.parse(game.cache.getText('char_data'));
 
@@ -75,10 +89,16 @@ var setup = {
 }
 
 var stageOne = {
+  preload: function() {
+  },
   create: function() {
+    if (game.gameData.winMusic) {
+      game.gameData.winMusic.fadeOut(1000);
+    }
     // Play stage one music!
     game.gameData.stageOneMusic = game.add.audio('stage_one');
     game.gameData.stageOneMusic.loopFull();
+
     // create all characters!
 
     characters = game.add.group();
@@ -122,21 +142,30 @@ var stageOne = {
 var stageTwo = {
   preload: function(stageOneMusic) {
     game.gameData.categories = [
-      "cats",
-      "puppies",
-      "bunnies",
-      "ducklings",
-      "whatever",
-      "whatever"
+      "politics",
+      "dogs",
+      "celebrities",
+      "cheetahs",
+      "missy elliot",
+      "robots"
+    ]
+    game.gameData.categoryNames = [
+      "Politics",
+      "Puppies",
+      "Celebs",
+      "Baby Cheetahs",
+      "Missy Elliot",
+      "Robots"
     ]
     game.gameData.stageOneMusic.fadeOut(1000);
-
     // Create group with high z-index to keep cursor on top
     game.gameData.cursorGroup = game.add.group();
     // game.gameData.cursorGroup.bringToTop()
   },
   create: function() {
     // Play stage two music!
+    game.gameData.stageTwoMusic = game.add.audio('stage_two');
+    game.gameData.stageTwoMusic.fadeIn(1000);
     // Create the game board!
     var leftMenuGroup = game.add.group();
     // make a rectangle for the lefthand menu
@@ -159,15 +188,29 @@ var stageTwo = {
     // 100 60 190
     // create six category indicators (alternate on odds)
     for (var i = 1, x = 40, y = 100; i < 7; i++) {
-      var category = game.add.button(x, y, 'cat' + i, categoryBtnClick);
+      var category = game.add.button(x, y, game.gameData.categories[i - 1], categoryBtnClick);
       category.catName = game.gameData.categories[i - 1];
+      var categoryTextStyle = {
+        font: 'bold 14px Helvetica',
+        fill: '#fff',
+        wordWrap: true,
+        wordWrapWidth: 100,
+        align: 'center'
+      }
+      var categoryText = game.add.text(x + 40, y + 100, game.gameData.categoryNames[i - 1], categoryTextStyle);
+      categoryText.anchor.set(0.5);
       if (i % 2 === 0) {
         x = 40;
-        y += 100;
+        y += 150;
       } else {
         x += 100;
       }
+
+
+
       category.alpha = 0.5;
+      category.width = 75;
+      category.height = 75;
 
       category.inputEnabled = true;
       category.events.onInputOver.add(function(category) {
@@ -224,8 +267,9 @@ var stageTwo = {
 
 function animateSquare() {
   // Create new category-square image
-  var square = game.add.image(game.gameData.chosenCategory.position.x + 2, game.gameData.chosenCategory.position.y + 2, 'cat1');
-
+  var square = game.add.image(game.gameData.chosenCategory.position.x + 2, game.gameData.chosenCategory.position.y + 2, game.gameData.chosenCategory.catName);
+  square.height = 100;
+  square.width = 100;
   // tween it to the character's location
   var squareTween = game.add.tween(square)
   squareTween.to({
@@ -262,6 +306,7 @@ function showResponse(character, depressed, likesCategory) {
       // Start shooting gifs! Shoot for 3 - 5 seconds
     var attackMusic = game.add.audio('attack');
     attackMusic.play();
+
     var shootGifsTimer = game.time.events.repeat(100, 20, animateSquare, this);
 
     // After timer event completes looping, display "not depressed" fail message
@@ -284,7 +329,7 @@ function showResponse(character, depressed, likesCategory) {
 
       // Create new text node - Try again!
       var tryAgainStyle = {
-        font: 'bold 48px fantasy',
+        font: 'bold 48px Helvetica',
         fill: 'yellow'
       };
       var tryAgainText = game.add.text(400, 250, 'Try Again! <3', tryAgainStyle);
@@ -326,7 +371,7 @@ function showResponse(character, depressed, likesCategory) {
 
       // Create new text node - Try again!
       var tryAgainStyle = {
-        font: 'bold 48px fantasy',
+        font: 'bold 48px Helvetica',
         fill: 'yellow'
       };
       var tryAgainText = game.add.text(400, 250, 'Try Again! <3', tryAgainStyle);
@@ -355,7 +400,6 @@ function showResponse(character, depressed, likesCategory) {
     // If your character is not depressed AND you chose the right gif... YOU WIN YAY
   } else {
     // For later:
-    // var attackMusic = game.add.audio('attack' + game.gameData.chosenCategory.catName);
     var attackMusic = game.add.audio('attack');
     attackMusic.play();
     var shootGifsTimer = game.time.events.repeat(100, 20, animateSquare, this);
@@ -363,9 +407,9 @@ function showResponse(character, depressed, likesCategory) {
     // After timer event completes looping, display "wrong gif" fail message
     // Note to self - refactor, do this with a callback
     game.time.events.add(3000, function(attackMusic) {
-
-      //group to contain tweet
-      var tweetGroup = game.add.group();
+      game.gameData.stageTwoMusic.fadeOut(1000);
+      game.gameData.winMusic = game.add.audio('win_' + game.gameData.chosenCharacter.data.imgKey);
+      game.gameData.winMusic.play();
       //create twitter bg img
       var twitterBg = game.add.image(400, 450, 'tweet_box');
       twitterBg.anchor.set(0.5);
@@ -382,19 +426,16 @@ function showResponse(character, depressed, likesCategory) {
 
       // Create new text node - Try again!
       var tryAgainStyle = {
-        font: 'bold 48px fantasy',
+        font: 'bold 48px Helvetica',
         fill: 'yellow'
       };
-      var tryAgainText = game.add.text(400, 200, 'Nice job!', tryAgainStyle);
+      var tryAgainText = game.add.text(400, 150, 'Nice job!', tryAgainStyle);
       tryAgainText.anchor.set(0.5);
 
       var playAgain = game.add.button(400, 250, 'replay', function() {
         game.state.start('setup');
       })
-
-      tweetGroup.add(twitterBg);
-      tweetGroup.add(tweetText);
-      tweetGroup.add(tryAgainText);
+      playAgain.anchor.set(0.5);
 
       //fade out attack music
       attackMusic.fadeOut(1000);
@@ -405,7 +446,6 @@ function showResponse(character, depressed, likesCategory) {
 function attackWithGif(character) {
   // Check to see if chosen character likes this gif!
   if (!game.gameData.chosenCharacter.data.depressed) {
-    // Args: showResponse(character, depressed[, likesCategory])
     showResponse(character, false);
   } else if (game.gameData.chosenCharacter.data.likes.indexOf(game.gameData.chosenCategory.catName) > -1 || game.gameData.chosenCategory.catName === 'whatever') {
     showResponse(character, true, true);
