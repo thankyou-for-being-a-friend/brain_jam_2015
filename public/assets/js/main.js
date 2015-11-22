@@ -30,14 +30,22 @@ var setUpGame = {
   preload: function() {
     // load any needed images/data
     game.load.image('person', 'assets/images/person.png');
+    game.load.image('cat1', 'assets/images/cat1.png');
+    game.load.image('cat2', 'assets/images/cat2.png');
+    game.load.image('cat3', 'assets/images/cat3.png');
+    game.load.image('cat4', 'assets/images/cat4.png');
+    game.load.image('cat5', 'assets/images/cat5.png');
+    game.load.image('cat6', 'assets/images/cat6.png');
+    game.load.image('left-menu', 'assets/images/left_menu.png');
+    game.load.image('blanche', 'assets/images/gg1/GG1.png');
+    game.load.image('dorothy', 'assets/images/gg2/GG2.png');
     game.load.image('wand', 'assets/images/magic_girl_wand.png');
     game.load.image('modal_bg', 'assets/images/modal_bg.png');
     game.load.image('tweet_bg', 'assets/images/tweet_bg.png');
     game.load.image('indicator', 'assets/images/indicator.png');
     game.load.text('char_data', 'assets/data/characters.json');
     game.gameData = {};
-    game.gameData.charNames = [];
-    // Set up timer here?
+    game.gameData.charNames = ['person', 'dorothy', 'blanche', 'person'];
   },
   create: function() {
     // Start up that scrollin'
@@ -49,13 +57,13 @@ var setUpGame = {
     characters = game.add.group();
 
     charData.forEach(function(character, idx) {
-      var currentCharacter = game.add.image(95 + 200 * idx, game.world.centerY, 'person');
+      var currentCharacter = game.add.image(95 + 200 * idx, game.world.centerY, game.gameData.charNames[idx]);
       var twitterHandleStyle = {
         font: 'bold 20px Arial',
         fill: '#369',
       };
       // add txt
-      var twitterHandle = game.add.text(95 + 200 * idx, 450, "@" + character.twitterHandle, twitterHandleStyle);
+      var twitterHandle = game.add.text(95 + 200 * idx, 475, "@" + character.twitterHandle, twitterHandleStyle);
       
       twitterHandle.anchor.set(0.5);
       currentCharacter.anchor.set(0.5);
@@ -92,15 +100,53 @@ var stageTwo = {
   preload: function() {},
   create: function() {
     // Create the game board!
+    var leftMenuGroup = game.add.group();
     // make a rectangle for the lefthand menu
+    var leftMenuRect = game.add.image(0,0,'left-menu');
     // Menu title (choose your weapon)
+    var menuTitleStyle = {
+      font: 'bold 20px Helvetica',
+      fill: '#fff',
+      align: 'center',
+      wordWrap: true,
+      wordWrapWidth: 200
+    }
+    var menuTitle = game.add.text(125, 50, "Choose Your Weapon!", menuTitleStyle);
+    menuTitle.anchor.set(0.5);
+    // Add all to leftMenuGroup
+    leftMenuGroup.add(leftMenuRect);
+    leftMenuGroup.add(menuTitle);
+
+    var gifCategories = game.add.group();
+    // 100 60 190
     // create six category indicators (isOdd to alternate)
+    for (var i = 1, x = 40, y = 100; i < 7; i++) {
+      if (i % 2 === 0) {
+
+        console.log(i + ' is even!');
+        var category = game.add.image(x, y, 'cat' + i);
+        x = 40;
+        y += 100;
+      } else {
+        console.log(i + " is odd");
+        var category = game.add.image(x, y, 'cat' + i);
+        x += 100;
+      }
       // Put click handlers on all to change gameData.category
+    }
+
+
+
     // place character on screen
       // Click handler to adjust happiness level/click counter
     // render helper text (click [charname] to send gifs)
-    // Create cursor img
-
+    // Create cursor img that follows mouse
+    game.gameData.wand = game.add.image(game.width - 75, 75,'wand');
+    game.gameData.wand.anchor.set(1);
+    game.input.mouse.onMouseMove = function(event) {
+      game.gameData.wand.position.x = event.x + 100;
+      game.gameData.wand.position.y = event.y + 45;
+    };
   }
 }
 
