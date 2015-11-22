@@ -57,10 +57,15 @@ var setup = {
     // game.load.audio('stage_two', 'assets/audio/BrainJam_Fairy_Wand.wav');
 
     // data
+    if (!game.gameData) {
+      game.gameData = {};
+    };
     game.load.text('char_data', 'assets/data/characters.json');
-    game.gameData = {};
   },
   create: function() {
+    if (game.gameData.stageTwoMusic) {
+      game.gameData.stageTwoMusic.fadeOut(1000);
+    }
     // pull in data from cache & parse from JSON to object
     charData = JSON.parse(game.cache.getText('char_data'));
 
@@ -77,11 +82,11 @@ var setup = {
 
 var stageOne = {
   preload: function() {
+  },
+  create: function() {
     if (game.gameData.stageTwoMusic) {
       game.gameData.stageTwoMusic.fadeOut(1000);
     }
-  },
-  create: function() {
     // Play stage one music!
     game.gameData.stageOneMusic = game.add.audio('stage_one');
     game.gameData.stageOneMusic.loopFull();
