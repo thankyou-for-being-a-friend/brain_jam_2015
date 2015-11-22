@@ -36,11 +36,17 @@ var setup = {
     game.load.spritesheet('blanche_sprite', 'assets/images/gg1/gg1_sprite.png', 559, 625, 2);
     game.load.spritesheet('dorothy_sprite', 'assets/images/gg2/gg2_sprite.png', 343, 660, 2);
     game.load.spritesheet('person_sprite', 'assets/images/person_sprite.png', 237, 519, 2);
-    
+    //sfx
     game.load.audio('fairy_wand', 'assets/audio/BrainJam_Fairy_Wand.wav');
     game.load.audio('pop', 'assets/audio/BrainJam_Pop.wav');
+    game.load.audio('select', 'assets/audio/BrainJam_UI_Click.wav');
+    // gif attacks!!
     game.load.audio('attack', 'assets/audio/BrainJam_Dogs_GIF.wav');
+    // music
+    game.load.audio('stage_one', 'assets/audio/BrainJam_Fairy_Wand.wav');
+    game.load.audio('fairy_wand', 'assets/audio/BrainJam_Fairy_Wand.wav');
 
+    // data
     game.load.text('char_data', 'assets/data/characters.json');
     game.gameData = {};
   },
@@ -60,6 +66,7 @@ var setup = {
 }
 
 var stageOne = {
+  // Play stage one music!
   create: function() {
     // create all characters!
 
@@ -114,6 +121,8 @@ var stageTwo = {
     // game.gameData.clickCounter = 0;
   },
   create: function() {
+    // Play stage two music!
+
     // Create the game board!
     var leftMenuGroup = game.add.group();
     // make a rectangle for the lefthand menu
@@ -211,7 +220,7 @@ function showResponse(character, depressed, likesCategory) {
 
       // tween it to the character's location
       var squareTween = game.add.tween(square)
-      squareTween.to({x: game.gameData.chosenCharacter.position.x + 35, y: game.gameData.chosenCharacter.position.y - 75}, 200, Phaser.Easing.Linear.None, true);
+      squareTween.to({x: 500, y: 250}, 200, Phaser.Easing.Linear.None, true);
       // once that's done: 
       squareTween.onComplete.add(function(square) {
         // remove square from game
@@ -238,25 +247,20 @@ function showResponse(character, depressed, likesCategory) {
 }
 
 function attackWithGif(character) {
-  // game.gameData.clickCounter++;
-  // if (game.gameData.clickCounter < 10) return;
-
   // Check to see if chosen character likes this gif!
   if (!game.gameData.chosenCharacter.data.depressed) {
     // Args: showResponse(character, depressed[, likesCategory])
     showResponse(game.gameData.chosenCharacter, false);
   } else if (game.gameData.chosenCharacter.data.likes.indexOf(game.gameData.chosenCategory.catName) > -1 || game.gameData.chosenCategory.catName === 'whatever') {
     showResponse(game.gameData.chosenCharacter, true, true);
-    // game.gameData.clickCounter = 0;
   } else {
     showResponse(game.gameData.chosenCharacter, true, false);
-    // game.gameData.clickCounter = 0;
   }
-    
-
 }
 
 function categoryBtnClick(category) {
+  var clickNoise = game.add.audio('select');
+  clickNoise.play();
   game.gameData.chosenCategory.alpha = 0.5;
   game.gameData.chosenCategory = category;
   game.gameData.chosenCategory.alpha = 1;
@@ -295,6 +299,8 @@ function showIndicator(character) {
 
 // View Tweets
 function showTweets(character) {
+  var clickNoise = game.add.audio('select');
+  clickNoise.play();
   // Hide new tweet indicator
   character.indicator.alpha = 0;
 
