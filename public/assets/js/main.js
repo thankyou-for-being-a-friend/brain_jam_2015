@@ -28,6 +28,7 @@ var setup = {
     game.load.image('modal_bg', 'assets/images/modal_bg.png');
     game.load.image('tweet_bg', 'assets/images/tweet_bg.png');
     game.load.image('left-menu', 'assets/images/left_menu.png');
+    game.load.image('tweet_box', 'assets/images/structure/tweet_box.png');
     
     game.load.image('blanche', 'assets/images/gg1/GG1.png');
     game.load.image('dorothy', 'assets/images/gg2/GG2.png');
@@ -38,6 +39,7 @@ var setup = {
     
     game.load.audio('fairy_wand', 'assets/audio/BrainJam_Fairy_Wand.wav');
     game.load.audio('pop', 'assets/audio/BrainJam_Pop.wav');
+    game.load.audio('attack', 'assets/audio/BrainJam_Dogs_GIF.wav');
 
     game.load.text('char_data', 'assets/data/characters.json');
     game.gameData = {};
@@ -109,6 +111,7 @@ var stageTwo = {
       "whatever",
       "whatever"
     ]
+    // game.gameData.clickCounter = 0;
   },
   create: function() {
     // Create the game board!
@@ -129,7 +132,7 @@ var stageTwo = {
     leftMenuGroup.add(leftMenuRect);
     leftMenuGroup.add(menuTitle);
 
-    gifCategories = game.add.group();
+    game.gameData.gifCategories = game.add.group();
     // 100 60 190
     // create six category indicators (alternate on odds)
     for (var i = 1, x = 40, y = 100; i < 7; i++) {
@@ -153,9 +156,9 @@ var stageTwo = {
         category.alpha = 0.5
       }, this);
 
-      gifCategories.add(category);
+      game.gameData.gifCategories.add(category);
     }
-    game.gameData.chosenCategory = gifCategories.getRandom();
+    game.gameData.chosenCategory = game.gameData.gifCategories.getRandom();
     game.gameData.chosenCategory.alpha = 1;
     // Create "back" button
     game.add.button(250, 550, 'indicator', function() {
@@ -164,7 +167,7 @@ var stageTwo = {
 
 
     // place character on screen
-    var currentCharacter = game.add.sprite(game.width/2 + 150, 300,  game.gameData.chosenCharacter.data.imgKey + '_sprite');
+    var currentCharacter = game.add.sprite(550, 300,  game.gameData.chosenCharacter.data.imgKey + '_sprite');
     currentCharacter.anchor.set(0.5);
     currentCharacter.scale.setTo(0.65, 0.65);
     currentCharacter.inputEnabled = true;
@@ -192,15 +195,65 @@ var stageTwo = {
 // ---------- Function Definitions ---------- 
 // Todo - get these outta this file IT'S SO MESSY OH GAWD
 
+function showResponse(character, depressed, likesCategory) {
+  // Disable clicks on all categories
+  game.gameData.gifCategories.forEach(function(gifCategory) {
+
+  });
+  if (!depressed) {
+    // Start shooting gifs! Shoot for 3 - 5 seconds
+    var attackMusic = game.add.audio('attack');
+    attackMusic.play();
+    var shootGifsTimer = game.time.events.repeat(100, 20, function() {
+    //play music
+    // Create new category-square image
+      var square = game.add.image(game.gameData.chosenCategory.position.x + 2, game.gameData.chosenCategory.position.y + 2, 'cat1');
+
+      // tween it to the character's location
+      var squareTween = game.add.tween(square)
+      squareTween.to({x: game.gameData.chosenCharacter.position.x + 35, y: game.gameData.chosenCharacter.position.y - 75}, 200, Phaser.Easing.Linear.None, true);
+      // once that's done: 
+      squareTween.onComplete.add(function(square) {
+        // remove square from game
+        square.destroy();
+      });
+
+      // Need a separate tween for scale <3
+      var squareScaleTween = game.add.tween(square.scale).to({x: 0.1, y: 0.1}, 200, Phaser.Easing.Linear.None, true);
+
+        // animate particle effects on char?
+
+    }, this);
+    // After timer event completes looping, display "not depressed" fail message
+    // Note to self - refactor, do this with a callback
+    game.time.events.add(3000, function(attackMusic) {
+      console.log(character.data.tweets.unnecessary[0]);
+      attackMusic.fadeOut(1000);
+    }, this, attackMusic);
+  } else if (depressed && !likesCategory) {
+    console.log(character.data.tweets.wrongGifs[0]);
+  } else {
+    console.log(character.data.tweets.correct[0]);
+  }
+}
+
 function attackWithGif(character) {
-  var fairySound = game.add.sound('fairy_wand', 0.5);
-  fairySound.play();
+  // game.gameData.clickCounter++;
+  // if (game.gameData.clickCounter < 10) return;
+
   // Check to see if chosen character likes this gif!
   if (!game.gameData.chosenCharacter.data.depressed) {
-    console.log('I\'m not even sad.');
-    return;
+    // Args: showResponse(character, depressed[, likesCategory])
+    showResponse(game.gameData.chosenCharacter, false);
+  } else if (game.gameData.chosenCharacter.data.likes.indexOf(game.gameData.chosenCategory.catName) > -1 || game.gameData.chosenCategory.catName === 'whatever') {
+    showResponse(game.gameData.chosenCharacter, true, true);
+    // game.gameData.clickCounter = 0;
+  } else {
+    showResponse(game.gameData.chosenCharacter, true, false);
+    // game.gameData.clickCounter = 0;
   }
-  console.log(game.gameData.chosenCharacter.data.likes.indexOf(game.gameData.chosenCategory.catName) > -1 || game.gameData.chosenCategory.catName === 'whatever' ? "I like that!" : "I don't like that.");
+    
+
 }
 
 function categoryBtnClick(category) {
@@ -234,7 +287,7 @@ function addTweet(character) {
 function showIndicator(character) {
   if (character.indicator.alpha != 1) {
     character.indicator.alpha = 1;
-    game.add.audio('pop', 0.25).play();
+    game.add.audio('pop').play();
   }
   console.log('New tweet from ' + character.data.name + '!');
 }
@@ -286,6 +339,8 @@ function showTweets(character) {
   wand.anchor.set(0.5);
   wand.inputEnabled = true;
   wand.events.onInputDown.add(function(character) {
+    var fairySound = game.add.sound('fairy_wand', 0.5);
+    fairySound.play();
     game.state.start('stageTwo');
   });
 
