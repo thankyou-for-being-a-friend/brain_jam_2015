@@ -39,7 +39,7 @@ var setup = {
     
     game.load.audio('fairy_wand', 'assets/audio/BrainJam_Fairy_Wand.wav');
     game.load.audio('pop', 'assets/audio/BrainJam_Pop.wav');
-    game.load.audio('attack', 'assets/audio/BrainJam_Pop.wav');
+    game.load.audio('attack', 'assets/audio/BrainJam_Dogs_GIF.wav');
 
     game.load.text('char_data', 'assets/data/characters.json');
     game.gameData = {};
@@ -197,13 +197,15 @@ var stageTwo = {
 
 function showResponse(character, depressed, likesCategory) {
   // Disable clicks on all categories
-  // game.gameData.gifCategories
+  game.gameData.gifCategories.forEach(function(gifCategory) {
+
+  });
   if (!depressed) {
     // Start shooting gifs! Shoot for 3 - 5 seconds
-    var shootGifsTimer = game.time.events.repeat(100, 20, function() {
-    //play music
     var attackMusic = game.add.audio('attack');
     attackMusic.play();
+    var shootGifsTimer = game.time.events.repeat(100, 20, function() {
+    //play music
     // Create new category-square image
       var square = game.add.image(game.gameData.chosenCategory.position.x + 2, game.gameData.chosenCategory.position.y + 2, 'cat1');
 
@@ -221,12 +223,13 @@ function showResponse(character, depressed, likesCategory) {
 
         // animate particle effects on char?
 
-    }, this, "args!");
+    }, this);
     // After timer event completes looping, display "not depressed" fail message
     // Note to self - refactor, do this with a callback
-    game.time.events.add(4000, function() {
+    game.time.events.add(3000, function(attackMusic) {
       console.log(character.data.tweets.unnecessary[0]);
-    });
+      attackMusic.fadeOut(1000);
+    }, this, attackMusic);
   } else if (depressed && !likesCategory) {
     console.log(character.data.tweets.wrongGifs[0]);
   } else {
@@ -284,7 +287,7 @@ function addTweet(character) {
 function showIndicator(character) {
   if (character.indicator.alpha != 1) {
     character.indicator.alpha = 1;
-    game.add.audio('pop', 0.25).play();
+    game.add.audio('pop').play();
   }
   console.log('New tweet from ' + character.data.name + '!');
 }
