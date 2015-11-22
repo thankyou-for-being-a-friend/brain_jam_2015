@@ -3,17 +3,6 @@ console.log("HELLO I AM HERE (main.js)");
 // Instantiate new game!
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game-container');
 
-// ---------- Plugins -----------
-this.game.kineticScrolling = this.game.plugins.add(Phaser.Plugin.KineticScrolling);
-this.game.kineticScrolling.configure({
-    kineticMovement: true,
-    timeConstantScroll: 325, //really mimic iOS
-    horizontalScroll: true,
-    verticalScroll: true,
-    horizontalWheel: true,
-    verticalWheel: false,
-    deltaWheel: 40
-});
 
 // ---------- Debuggin' ---------- 
 
@@ -22,56 +11,74 @@ var characters;
 // ---------- Game States ---------- 
 
 var setUpGame = {
-    preload: function() {
-      // load any needed images/data
-      game.load.image('person', 'assets/images/person.png');
-      game.load.image('b', 'assets/images/person.png');
-      game.load.image('modal_bg', 'assets/images/modal_bg.png');
-      game.load.image('tweet_bg', 'assets/images/tweet_bg.png');
-      game.load.image('indicator', 'assets/images/indicator.png');
-      game.load.text('char_data', 'assets/data/characters.json');
-      game.gameData = {};
-      game.gameData.charNames = [];
-      // Set up timer here?
-    },
-    create: function() {
-      // create all characters!
-      // pull in data from cache & parse from JSON to object
-      var charData = JSON.parse(game.cache.getText('char_data'));
+  init: function() {
 
-      characters = game.add.group();
+    // FUCK THIS PLUGIN I'll do it later.
 
-      charData.forEach(function(character, idx) {
-        var currentCharacter = game.add.image(95 + 200 * idx, game.world.centerY, 'person');
-        currentCharacter.anchor.set(0.5);
-        currentCharacter.scale.setTo(0.5, 0.5);
-        // Give them the data!!
-        currentCharacter.data = character;
-        currentCharacter.currentTweets = [];
-        // Set up character to take input
-        currentCharacter.inputEnabled = true;
-        currentCharacter.events.onInputDown.add(showTweets, this);
-        // add an indicator to character that will be hidden if they're clicked on
-        currentCharacter.indicator = game.add.image(95 + 200 * idx, game.world.centerY - 150, 'indicator')
-        currentCharacter.indicator.alpha = 0;
-        characters.add(currentCharacter);
-      });
-      // determine who's depressed & set that up
-      var depressedChar = characters.getRandom();
-      depressedChar.depressed = true;
-      // Create a "new tweet indicator"
-      // start every char off with one tweet
-      characters.forEach(function(character){
+    // // ---------- Plugins -----------
+    // this.game.kineticScrolling = this.game.plugins.add(Phaser.Plugin.KineticScrolling);
+    // this.game.kineticScrolling.configure({
+    //   kineticMovement: true,
+    //   timeConstantScroll: 325, //really mimic iOS
+    //   horizontalScroll: true,
+    //   verticalScroll: true,
+    //   horizontalWheel: false,
+    //   verticalWheel: true,
+    //   deltaWheel: 40
+    // });
+  },
+  preload: function() {
+    // load any needed images/data
+    game.load.image('person', 'assets/images/person.png');
+    game.load.image('b', 'assets/images/person.png');
+    game.load.image('modal_bg', 'assets/images/modal_bg.png');
+    game.load.image('tweet_bg', 'assets/images/tweet_bg.png');
+    game.load.image('indicator', 'assets/images/indicator.png');
+    game.load.text('char_data', 'assets/data/characters.json');
+    game.gameData = {};
+    game.gameData.charNames = [];
+    // Set up timer here?
+  },
+  create: function() {
+    // Start up that scrollin'
+    // this.game.kineticScrolling.start();
+    // create all characters!
+    // pull in data from cache & parse from JSON to object
+    var charData = JSON.parse(game.cache.getText('char_data'));
 
-        var nextTweetDelay = Math.round(2 + Math.random() * 10) * 1000;
-        // call the addTweet function again on a delay
-        game.time.events.add(nextTweetDelay, addTweet, this, character);
-      });
-      // game.time.events.loop(5000, function(){
-      //   characters.forEach(addTweet);
-      // }, this)
-    }
+    characters = game.add.group();
+
+    charData.forEach(function(character, idx) {
+      var currentCharacter = game.add.image(95 + 200 * idx, game.world.centerY, 'person');
+      currentCharacter.anchor.set(0.5);
+      currentCharacter.scale.setTo(0.5, 0.5);
+      // Give them the data!!
+      currentCharacter.data = character;
+      currentCharacter.currentTweets = [];
+      // Set up character to take input
+      currentCharacter.inputEnabled = true;
+      currentCharacter.events.onInputDown.add(showTweets, this);
+      // add an indicator to character that will be hidden if they're clicked on
+      currentCharacter.indicator = game.add.image(95 + 200 * idx, game.world.centerY - 150, 'indicator')
+      currentCharacter.indicator.alpha = 0;
+      characters.add(currentCharacter);
+    });
+    // determine who's depressed & set that up
+    var depressedChar = characters.getRandom();
+    depressedChar.depressed = true;
+    // Create a "new tweet indicator"
+    // start every char off with one tweet
+    characters.forEach(function(character) {
+
+      var nextTweetDelay = Math.round(2 + Math.random() * 10) * 1000;
+      // call the addTweet function again on a delay
+      game.time.events.add(nextTweetDelay, addTweet, this, character);
+    });
+    // game.time.events.loop(5000, function(){
+    //   characters.forEach(addTweet);
+    // }, this)
   }
+}
 
 // ---------- Function Definitions ---------- 
 // Todo - modularize
@@ -98,7 +105,7 @@ function addTweet(character) {
 
 }
 // Show new tweet indicator
-function showIndicator (character) {
+function showIndicator(character) {
   character.indicator.alpha = 1;
   console.log('New tweet from ' + character.data.name + '!')
 }
@@ -108,7 +115,8 @@ function showIndicator (character) {
 function showTweets(character) {
   // Hide new tweet indicator
   character.indicator.alpha = 0;
-
+  // set game boundaries
+  // game.world.setBounds(0,0, game.width, 250 + 75 * character.currentTweets.length);
   // Create a new group that will contain modal & stuff
   var tweetView = game.add.group();
   // Add two new rectangles to the game space - modal bg and white bg for tweets
@@ -132,7 +140,7 @@ function showTweets(character) {
   var tweetStyle = {
     font: "14px Helvetica",
     align: 'left',
-    wordWrap: true, 
+    wordWrap: true,
     wordWrapWidth: 550
   };
   character.currentTweets.forEach(function(tweet, idx) {
@@ -152,6 +160,8 @@ function showTweets(character) {
   tweetView.add(tweetBg);
   tweetView.add(twitterHandle);
   tweetView.add(tweetsContainer);
+  // debugger
+  // this.game.world.setBounds(0, 0, 320 * this.rectangles.length, this.game.height);
 
 }
 
