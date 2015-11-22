@@ -1,3 +1,7 @@
+// TODO: Clean up poorly named functions
+// Separate files out to avoid the horribleness that is scrolling though this damn file
+// Fix event-dependent logic
+
 console.log("HELLO I AM HERE (main.js)");
 
 // Instantiate new game!
@@ -25,6 +29,8 @@ var setup = {
     // Indicators/cursors/etc
     game.load.spritesheet('wand', 'assets/images/magic_girl_wand.png', 128, 128, 1);
     game.load.image('indicator', 'assets/images/indicator.png');
+    game.load.image('cancel', 'assets/images/structure/cancel_btn.png');
+    game.load.image('replay', 'assets/images/structure/replay_btn.png');
     // Structural images
     game.load.image('modal_bg', 'assets/images/modal_bg.png');
     game.load.image('tweet_bg', 'assets/images/tweet_bg.png');
@@ -124,11 +130,13 @@ var stageTwo = {
       "whatever"
     ]
     game.gameData.stageOneMusic.fadeOut(1000);
-    // game.gameData.clickCounter = 0;
+
+    // Create group with high z-index to keep cursor on top
+    game.gameData.cursorGroup = game.add.group();
+    // game.gameData.cursorGroup.bringToTop()
   },
   create: function() {
     // Play stage two music!
-
     // Create the game board!
     var leftMenuGroup = game.add.group();
     // make a rectangle for the lefthand menu
@@ -176,10 +184,11 @@ var stageTwo = {
     game.gameData.chosenCategory = game.gameData.gifCategories.getRandom();
     game.gameData.chosenCategory.alpha = 1;
     // Create "back" button
-    game.add.button(250, 550, 'indicator', function() {
+    game.gameData.cancelBtn = game.add.button(700, 550, 'cancel', function() {
       game.state.start('stageOne');
     }, this)
 
+    game.gameData.cancelBtn.anchor.set(0.5);
 
     // place character on screen
     var currentCharacter = game.add.sprite(550, 300, game.gameData.chosenCharacter.data.imgKey + '_sprite');
@@ -194,16 +203,19 @@ var stageTwo = {
       character.frame = 0;
     });
     // Click handler to adjust happiness level/click counter
-    currentCharacter.events.onInputDown.add(attackWithGif);
+    currentCharacter.events.onInputDown.add(attackWithGif, this);
     // render helper text (click [charname] to send gifs)
     // Create cursor img that follows mouse
     game.gameData.wand = game.add.sprite(game.width - 75, 75, 'wand');
     game.gameData.wand.anchor.set(1);
+    game.gameData.wand.position.z = 2;
+    game.gameData.cursorGroup.add(game.gameData.wand);
 
   },
   update: function() {
     game.gameData.wand.position.x = game.input.mousePointer.position.x + 100;
     game.gameData.wand.position.y = game.input.mousePointer.position.y + 100;
+    game.world.bringToTop(game.gameData.cursorGroup);
   }
 }
 
@@ -211,7 +223,6 @@ var stageTwo = {
 // Todo - get these outta this file IT'S SO MESSY OH GAWD
 
 function animateSquare() {
-  //play music
   // Create new category-square image
   var square = game.add.image(game.gameData.chosenCategory.position.x + 2, game.gameData.chosenCategory.position.y + 2, 'cat1');
 
@@ -238,12 +249,17 @@ function animateSquare() {
 }
 
 function showResponse(character, depressed, likesCategory) {
-  // Disable clicks on all categories
+  game.gameData.cancelBtn.input.enabled = false;
+  // Disable clicks on all categories & char
+  character.input.enabled = false;
+  character.input.enabled = false;
   game.gameData.gifCategories.forEach(function(gifCategory) {
-
+    gifCategory.input.enabled = false;
   });
+
   if (!depressed) {
-    // Start shooting gifs! Shoot for 3 - 5 seconds
+    console.log('not depressed')
+      // Start shooting gifs! Shoot for 3 - 5 seconds
     var attackMusic = game.add.audio('attack');
     attackMusic.play();
     var shootGifsTimer = game.time.events.repeat(100, 20, animateSquare, this);
@@ -253,14 +269,136 @@ function showResponse(character, depressed, likesCategory) {
     game.time.events.add(3000, function(attackMusic) {
 
       //create twitter bg img
+      var twitterBg = game.add.image(400, 450, 'tweet_box');
+      twitterBg.anchor.set(0.5);
+      // Create new text node w/content of character.data.tweets.unnecessary[0]
+      var tweetStyle = {
+        font: 'bold 24px Arial',
+        fill: '#369',
+        wordWrap: true,
+        wordWrapWidth: 500,
+        align: 'left'
+      };
+      var tweetText = game.add.text(400, 450, game.gameData.chosenCharacter.data.tweets.unnecessary[0], tweetStyle);
+      tweetText.anchor.set(0.5);
 
-      console.log(character.data.tweets.unnecessary[0]);
+      // Create new text node - Try again!
+      var tryAgainStyle = {
+        font: 'bold 48px fantasy',
+        fill: 'yellow'
+      };
+      var tryAgainText = game.add.text(400, 250, 'Try Again! <3', tryAgainStyle);
+      tryAgainText.anchor.set(0.5);
+
+      //fade out attack music
       attackMusic.fadeOut(1000);
+      game.time.events.add(5000, function() {
+        console.log('going back to stage one');
+        game.state.start('stageOne');
+      }, this)
     }, this, attackMusic);
   } else if (depressed && !likesCategory) {
-    console.log(character.data.tweets.wrongGifs[0]);
+    console.log('depressed, not right gif');
+    // Start shooting gifs! Shoot for 3 - 5 seconds
+    var attackMusic = game.add.audio('attack');
+    attackMusic.play();
+    var shootGifsTimer = game.time.events.repeat(100, 20, animateSquare, this);
+
+    // After timer event completes looping, display "wrong gif" fail message
+    // Note to self - refactor, do this with a callback
+    game.time.events.add(3000, function(attackMusic) {
+
+      //group to contain tweet
+      var tweetGroup = game.add.group();
+      //create twitter bg img
+      var twitterBg = game.add.image(400, 450, 'tweet_box');
+      twitterBg.anchor.set(0.5);
+      // Create new text node w/content of character.data.tweets.unnecessary[0]
+      var tweetStyle = {
+        font: 'bold 24px Arial',
+        fill: '#369',
+        wordWrap: true,
+        wordWrapWidth: 500,
+        align: 'left'
+      };
+      var tweetText = game.add.text(400, 450, game.gameData.chosenCharacter.data.tweets.wrongGifs[0], tweetStyle);
+      tweetText.anchor.set(0.5);
+
+      // Create new text node - Try again!
+      var tryAgainStyle = {
+        font: 'bold 48px fantasy',
+        fill: 'yellow'
+      };
+      var tryAgainText = game.add.text(400, 250, 'Try Again! <3', tryAgainStyle);
+      tryAgainText.anchor.set(0.5);
+
+      tweetGroup.add(twitterBg);
+      tweetGroup.add(tweetText);
+      tweetGroup.add(tryAgainText);
+
+      //fade out attack music
+      attackMusic.fadeOut(1000);
+      // Get rid of tweet after 5 seconds
+      game.time.events.add(5000, function() {
+        tweetGroup.destroy();
+        console.log('halllo');
+        // re-enable clicks on all categories & char
+        game.gameData.gifCategories.forEach(function(gifCategory) {
+          gifCategory.input.enabled = true;
+        });
+        character.input.enabled = true;
+        game.gameData.cancelBtn.input.enabled = true;
+      }, this, tweetGroup)
+
+    }, this, attackMusic);
+
+    // If your character is not depressed AND you chose the right gif... YOU WIN YAY
   } else {
-    console.log(character.data.tweets.correct[0]);
+    // For later:
+    // var attackMusic = game.add.audio('attack' + game.gameData.chosenCategory.catName);
+    var attackMusic = game.add.audio('attack');
+    attackMusic.play();
+    var shootGifsTimer = game.time.events.repeat(100, 20, animateSquare, this);
+
+    // After timer event completes looping, display "wrong gif" fail message
+    // Note to self - refactor, do this with a callback
+    game.time.events.add(3000, function(attackMusic) {
+
+      //group to contain tweet
+      var tweetGroup = game.add.group();
+      //create twitter bg img
+      var twitterBg = game.add.image(400, 450, 'tweet_box');
+      twitterBg.anchor.set(0.5);
+
+      var tweetStyle = {
+        font: 'bold 24px Arial',
+        fill: '#369',
+        wordWrap: true,
+        wordWrapWidth: 500,
+        align: 'left'
+      };
+      var tweetText = game.add.text(400, 450, game.gameData.chosenCharacter.data.tweets.correct[0], tweetStyle);
+      tweetText.anchor.set(0.5);
+
+      // Create new text node - Try again!
+      var tryAgainStyle = {
+        font: 'bold 48px fantasy',
+        fill: 'yellow'
+      };
+      var tryAgainText = game.add.text(400, 200, 'Nice job!', tryAgainStyle);
+      tryAgainText.anchor.set(0.5);
+
+      var playAgain = game.add.button(400, 250, 'replay', function() {
+        game.state.start('setup');
+      })
+
+      tweetGroup.add(twitterBg);
+      tweetGroup.add(tweetText);
+      tweetGroup.add(tryAgainText);
+
+      //fade out attack music
+      attackMusic.fadeOut(1000);
+    }, this, attackMusic);
   }
 }
 
@@ -268,11 +406,11 @@ function attackWithGif(character) {
   // Check to see if chosen character likes this gif!
   if (!game.gameData.chosenCharacter.data.depressed) {
     // Args: showResponse(character, depressed[, likesCategory])
-    showResponse(game.gameData.chosenCharacter, false);
+    showResponse(character, false);
   } else if (game.gameData.chosenCharacter.data.likes.indexOf(game.gameData.chosenCategory.catName) > -1 || game.gameData.chosenCategory.catName === 'whatever') {
-    showResponse(game.gameData.chosenCharacter, true, true);
+    showResponse(character, true, true);
   } else {
-    showResponse(game.gameData.chosenCharacter, true, false);
+    showResponse(character, true, false);
   }
 }
 
