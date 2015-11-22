@@ -367,8 +367,6 @@ function showResponse(character, depressed, likesCategory) {
     // Note to self - refactor, do this with a callback
     game.time.events.add(3000, function(attackMusic) {
 
-      //group to contain tweet
-      var tweetGroup = game.add.group();
       //create twitter bg img
       var twitterBg = game.add.image(400, 450, 'tweet_box');
       twitterBg.anchor.set(0.5);
@@ -394,10 +392,7 @@ function showResponse(character, depressed, likesCategory) {
       var playAgain = game.add.button(400, 250, 'replay', function() {
         game.state.start('setup');
       })
-
-      tweetGroup.add(twitterBg);
-      tweetGroup.add(tweetText);
-      tweetGroup.add(tryAgainText);
+      playAgain.anchor.set(0.5);
 
       //fade out attack music
       attackMusic.fadeOut(1000);
