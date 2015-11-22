@@ -6,7 +6,7 @@
 		"x": 10,
 		"y": 10
 	},
-	"twitterHandle": "dorothyTweets",
+	"twitterHandle": "dorothyzbornak",
 	"likes": ["cats", "Tom Hiddleston"],
 	"avatarImg": "assets/images/dorothyTest.jpeg",
 	"bio": "This is Dorothy's bio text.",
@@ -38,7 +38,7 @@
 		"x": 100,
 		"y": 10
 	},
-	"twitterHandle": "roseTweets",
+	"twitterHandle": "roseycheeks",
 	"likes": ["puppies", "Chris Hemsworth"],
 	"avatarImg": "assets/images/roseTest.jpeg",
 	"bio": "This is Rose's bio text.",
@@ -66,7 +66,7 @@
 		"x": 200,
 		"y": 10
 	},
-	"twitterHandle": "blancheTweets",
+	"twitterHandle": "foxyroxymoxy_5",
 	"likes": ["ducklings", "Chris Evans"],
 	"avatarImg": "assets/images/blancheTest.jpeg",
 	"bio": "This is Blanche's bio text.",
@@ -94,7 +94,7 @@
 		"x": 300,
 		"y": 10
 	},
-	"twitterHandle": "sophiaTweets",
+	"twitterHandle": "sicilyrocket",
 	"likes": ["bunnies", "Scarlett Johannson"],
 	"avatarImg": "assets/images/sophiaTest.jpeg",
 	"bio": "This is Sophia's bio text.",

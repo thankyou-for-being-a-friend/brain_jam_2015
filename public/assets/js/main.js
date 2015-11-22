@@ -30,7 +30,7 @@ var setUpGame = {
   preload: function() {
     // load any needed images/data
     game.load.image('person', 'assets/images/person.png');
-    game.load.image('b', 'assets/images/person.png');
+    game.load.image('wand', 'assets/images/magic_girl_wand.png');
     game.load.image('modal_bg', 'assets/images/modal_bg.png');
     game.load.image('tweet_bg', 'assets/images/tweet_bg.png');
     game.load.image('indicator', 'assets/images/indicator.png');
@@ -50,6 +50,14 @@ var setUpGame = {
 
     charData.forEach(function(character, idx) {
       var currentCharacter = game.add.image(95 + 200 * idx, game.world.centerY, 'person');
+      var twitterHandleStyle = {
+        font: 'bold 20px Arial',
+        fill: '#369',
+      };
+      // add txt
+      var twitterHandle = game.add.text(95 + 200 * idx, 450, "@" + character.twitterHandle, twitterHandleStyle);
+      
+      twitterHandle.anchor.set(0.5);
       currentCharacter.anchor.set(0.5);
       currentCharacter.scale.setTo(0.5, 0.5);
       // Give them the data!!
@@ -77,6 +85,22 @@ var setUpGame = {
     // game.time.events.loop(5000, function(){
     //   characters.forEach(addTweet);
     // }, this)
+  }
+}
+
+var stageTwo = {
+  preload: function() {},
+  create: function() {
+    // Create the game board!
+    // make a rectangle for the lefthand menu
+    // Menu title (choose your weapon)
+    // create six category indicators (isOdd to alternate)
+      // Put click handlers on all to change gameData.category
+    // place character on screen
+      // Click handler to adjust happiness level/click counter
+    // render helper text (click [charname] to send gifs)
+    // Create cursor img
+
   }
 }
 
@@ -115,21 +139,28 @@ function showIndicator(character) {
 function showTweets(character) {
   // Hide new tweet indicator
   character.indicator.alpha = 0;
-  // set game boundaries
+
+  // ------- KINETIC SCROLLING NOT WORKINGSJKSD -------
+  // Set game boundaries because boundaries are important.
   // game.world.setBounds(0,0, game.width, 250 + 75 * character.currentTweets.length);
+  // --------------------------------------------------
+
   // Create a new group that will contain modal & stuff
   var tweetView = game.add.group();
+  
   // Add two new rectangles to the game space - modal bg and white bg for tweets
   var modalBg = game.add.image(game.world.centerX, game.world.centerY, 'modal_bg');
   var tweetBg = game.add.image(game.world.centerX, game.world.centerY, 'tweet_bg');
   // Centering both rectangles
   modalBg.anchor.set(0.5);
   tweetBg.anchor.set(0.5);
+  
   // Font styles for twitter handle!
   var twitterHandleStyle = {
     font: 'bold 32px Arial',
     fill: '#369',
   };
+  
   // add txt
   var twitterHandle = game.add.text(game.world.centerX, 100, character.data.twitterHandle, twitterHandleStyle);
   twitterHandle.anchor.set(0.5);
@@ -148,6 +179,13 @@ function showTweets(character) {
     tweetsContainer.add(tweetText);
   });
   // Add magical girl wand
+  var wand = game.add.image(game.width - 75, 75,'wand');
+  wand.anchor.set(0.5);
+  wand.inputEnabled = true;
+  wand.events.onInputDown.add(function(character) {
+    game.gameData.chosenCharacter = character;
+    game.state.start('stageTwo');
+  });
 
   // Setting up modal to have "click out of meee" functionality
   modalBg.inputEnabled = true;
@@ -160,6 +198,7 @@ function showTweets(character) {
   tweetView.add(tweetBg);
   tweetView.add(twitterHandle);
   tweetView.add(tweetsContainer);
+  tweetView.add(wand);
   // debugger
   // this.game.world.setBounds(0, 0, 320 * this.rectangles.length, this.game.height);
 
@@ -167,5 +206,6 @@ function showTweets(character) {
 
 // ---------- Game State Setup & GO! ---------- 
 
-game.state.add('play-game', setUpGame);
-game.state.start('play-game');
+game.state.add('stageOne', setUpGame);
+game.state.add('stageTwo', stageTwo);
+game.state.start('stageOne');
