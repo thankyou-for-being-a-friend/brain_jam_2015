@@ -43,8 +43,8 @@ var setup = {
     // gif attacks!!
     game.load.audio('attack', 'assets/audio/BrainJam_Dogs_GIF.wav');
     // music
-    game.load.audio('stage_one', 'assets/audio/BrainJam_Fairy_Wand.wav');
-    game.load.audio('fairy_wand', 'assets/audio/BrainJam_Fairy_Wand.wav');
+    game.load.audio('stage_one', 'assets/audio/ambient_stage_one.wav');
+    // game.load.audio('stage_two', 'assets/audio/BrainJam_Fairy_Wand.wav');
 
     // data
     game.load.text('char_data', 'assets/data/characters.json');
@@ -66,8 +66,10 @@ var setup = {
 }
 
 var stageOne = {
-  // Play stage one music!
   create: function() {
+    // Play stage one music!
+    var stageOneMusic = game.add.audio('stage_one');
+    stageOneMusic.loopFull();
     // create all characters!
 
     characters = game.add.group();
