@@ -39,7 +39,8 @@ var setUpGame = {
     game.load.image('left-menu', 'assets/images/left_menu.png');
     game.load.image('blanche', 'assets/images/gg1/GG1.png');
     game.load.image('dorothy', 'assets/images/gg2/GG2.png');
-    game.load.image('wand', 'assets/images/magic_girl_wand.png');
+    // game.load.image('wand', 'assets/images/magic_girl_wand.png');
+    game.load.spritesheet('wand', 'assets/images/magic_girl_wand.png', 128, 128, 1);
     game.load.image('modal_bg', 'assets/images/modal_bg.png');
     game.load.image('tweet_bg', 'assets/images/tweet_bg.png');
     game.load.image('indicator', 'assets/images/indicator.png');
@@ -117,40 +118,69 @@ var stageTwo = {
     leftMenuGroup.add(leftMenuRect);
     leftMenuGroup.add(menuTitle);
 
-    var gifCategories = game.add.group();
+    gifCategories = game.add.group();
     // 100 60 190
     // create six category indicators (isOdd to alternate)
     for (var i = 1, x = 40, y = 100; i < 7; i++) {
       if (i % 2 === 0) {
-        var category = game.add.image(x, y, 'cat' + i);
+        var category = game.add.button(x, y, 'cat' + i, function(category) {
+          console.log(game.gameData.chosenCategory.position)
+          game.gameData.chosenCategory.alpha = 0.5;
+          game.gameData.chosenCategory = category;
+          game.gameData.chosenCategory.alpha = 1;
+          console.log(game.gameData.chosenCategory.position)
+        });
         x = 40;
         y += 100;
       } else {
-        var category = game.add.image(x, y, 'cat' + i);
+        var category = game.add.button(x, y, 'cat' + i, function(category) {
+          console.log(game.gameData.chosenCategory.position)
+          game.gameData.chosenCategory.alpha = 0.5;
+          game.gameData.chosenCategory = category;
+          game.gameData.chosenCategory.alpha = 1;
+          console.log(game.gameData.chosenCategory.position)
+        });
         x += 100;
       }
+      category.alpha = 0.5;
+      gifCategories.add(category);
       category.inputEnabled = true;
-      category.events.onInputOver.add(function(event) {
-        console.log('You\'re over me!');
+      category.events.onInputOver.add(function(category) {
+        category.alpha = 1
       }, this);
-      category.events.onInputOut.add(function(event) {
-        console.log('You\'re away!');
+      category.events.onInputOut.add(function(category) {
+        if (game.gameData.chosenCategory === category) return;
+        category.alpha = 0.5
       }, this);
+      // category.events.onInputDown.add(function(category) {
+      //   console.log('clicked');
+      //   category.alpha = 1
+      // });
       // Put click handlers on all to change gameData.category
     }
-
+    game.gameData.chosenCategory = gifCategories.getRandom();
+    game.gameData.chosenCategory.alpha = 1;
+    // Create "back" button
+    game.add.button(250,550, 'indicator', function() {},this)
 
 
     // place character on screen
       // Click handler to adjust happiness level/click counter
     // render helper text (click [charname] to send gifs)
     // Create cursor img that follows mouse
-    game.gameData.wand = game.add.image(game.width - 75, 75,'wand');
+    game.gameData.wand = game.add.sprite(game.width - 75, 75,'wand');
     game.gameData.wand.anchor.set(1);
     // game.input.mouse.onMouseMove.add(function(event) {
-    //   game.gameData.wand.position.x = event.x + 100;
-    //   game.gameData.wand.position.y = event.y + 45;
+      // game.gameData.wand.position.x = event.x + 100;
+      // game.gameData.wand.position.y = event.y + 45;
     // });
+  },
+  update: function() {
+    // debugger    
+    // game.physics.enable(game.gameData.wand, Phaser.Physics.ARCADE);
+    // game.physics.arcade.moveToPointer(game.gameData.wand, 4000);
+    game.gameData.wand.position.x = game.input.mousePointer.position.x + 100;
+    game.gameData.wand.position.y = game.input.mousePointer.position.y + 100;
   }
 }
 
