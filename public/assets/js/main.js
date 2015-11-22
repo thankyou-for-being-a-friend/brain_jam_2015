@@ -122,16 +122,20 @@ var stageTwo = {
     // create six category indicators (isOdd to alternate)
     for (var i = 1, x = 40, y = 100; i < 7; i++) {
       if (i % 2 === 0) {
-
-        console.log(i + ' is even!');
         var category = game.add.image(x, y, 'cat' + i);
         x = 40;
         y += 100;
       } else {
-        console.log(i + " is odd");
         var category = game.add.image(x, y, 'cat' + i);
         x += 100;
       }
+      category.inputEnabled = true;
+      category.events.onInputOver.add(function(event) {
+        console.log('You\'re over me!');
+      }, this);
+      category.events.onInputOut.add(function(event) {
+        console.log('You\'re away!');
+      }, this);
       // Put click handlers on all to change gameData.category
     }
 
@@ -143,10 +147,10 @@ var stageTwo = {
     // Create cursor img that follows mouse
     game.gameData.wand = game.add.image(game.width - 75, 75,'wand');
     game.gameData.wand.anchor.set(1);
-    game.input.mouse.onMouseMove = function(event) {
-      game.gameData.wand.position.x = event.x + 100;
-      game.gameData.wand.position.y = event.y + 45;
-    };
+    // game.input.mouse.onMouseMove.add(function(event) {
+    //   game.gameData.wand.position.x = event.x + 100;
+    //   game.gameData.wand.position.y = event.y + 45;
+    // });
   }
 }
 
