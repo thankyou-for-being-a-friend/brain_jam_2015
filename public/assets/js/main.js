@@ -39,6 +39,7 @@ var setup = {
     
     game.load.audio('fairy_wand', 'assets/audio/BrainJam_Fairy_Wand.wav');
     game.load.audio('pop', 'assets/audio/BrainJam_Pop.wav');
+    game.load.audio('attack', 'assets/audio/BrainJam_Pop.wav');
 
     game.load.text('char_data', 'assets/data/characters.json');
     game.gameData = {};
@@ -110,7 +111,7 @@ var stageTwo = {
       "whatever",
       "whatever"
     ]
-    game.gameData.clickCounter = 0;
+    // game.gameData.clickCounter = 0;
   },
   create: function() {
     // Create the game board!
@@ -131,7 +132,7 @@ var stageTwo = {
     leftMenuGroup.add(leftMenuRect);
     leftMenuGroup.add(menuTitle);
 
-    gifCategories = game.add.group();
+    game.gameData.gifCategories = game.add.group();
     // 100 60 190
     // create six category indicators (alternate on odds)
     for (var i = 1, x = 40, y = 100; i < 7; i++) {
@@ -155,9 +156,9 @@ var stageTwo = {
         category.alpha = 0.5
       }, this);
 
-      gifCategories.add(category);
+      game.gameData.gifCategories.add(category);
     }
-    game.gameData.chosenCategory = gifCategories.getRandom();
+    game.gameData.chosenCategory = game.gameData.gifCategories.getRandom();
     game.gameData.chosenCategory.alpha = 1;
     // Create "back" button
     game.add.button(250, 550, 'indicator', function() {
@@ -166,7 +167,7 @@ var stageTwo = {
 
 
     // place character on screen
-    var currentCharacter = game.add.sprite(game.width/2 + 150, 300,  game.gameData.chosenCharacter.data.imgKey + '_sprite');
+    var currentCharacter = game.add.sprite(550, 300,  game.gameData.chosenCharacter.data.imgKey + '_sprite');
     currentCharacter.anchor.set(0.5);
     currentCharacter.scale.setTo(0.65, 0.65);
     currentCharacter.inputEnabled = true;
@@ -195,8 +196,37 @@ var stageTwo = {
 // Todo - get these outta this file IT'S SO MESSY OH GAWD
 
 function showResponse(character, depressed, likesCategory) {
+  // Disable clicks on all categories
+  // game.gameData.gifCategories
   if (!depressed) {
-    console.log(character.data.tweets.unnecessary[0]);
+    // Start shooting gifs! Shoot for 3 - 5 seconds
+    var shootGifsTimer = game.time.events.repeat(100, 20, function() {
+    //play music
+    var attackMusic = game.add.audio('attack');
+    attackMusic.play();
+    // Create new category-square image
+      var square = game.add.image(game.gameData.chosenCategory.position.x + 2, game.gameData.chosenCategory.position.y + 2, 'cat1');
+
+      // tween it to the character's location
+      var squareTween = game.add.tween(square)
+      squareTween.to({x: game.gameData.chosenCharacter.position.x + 35, y: game.gameData.chosenCharacter.position.y - 75}, 200, Phaser.Easing.Linear.None, true);
+      // once that's done: 
+      squareTween.onComplete.add(function(square) {
+        // remove square from game
+        square.destroy();
+      });
+
+      // Need a separate tween for scale <3
+      var squareScaleTween = game.add.tween(square.scale).to({x: 0.1, y: 0.1}, 200, Phaser.Easing.Linear.None, true);
+
+        // animate particle effects on char?
+
+    }, this, "args!");
+    // After timer event completes looping, display "not depressed" fail message
+    // Note to self - refactor, do this with a callback
+    game.time.events.add(4000, function() {
+      console.log(character.data.tweets.unnecessary[0]);
+    });
   } else if (depressed && !likesCategory) {
     console.log(character.data.tweets.wrongGifs[0]);
   } else {
@@ -205,17 +235,22 @@ function showResponse(character, depressed, likesCategory) {
 }
 
 function attackWithGif(character) {
-  var fairySound = game.add.sound('fairy_wand', 0.5);
-  fairySound.play();
-  game.gameData.clickCounter++;
+  // game.gameData.clickCounter++;
+  // if (game.gameData.clickCounter < 10) return;
+
   // Check to see if chosen character likes this gif!
   if (!game.gameData.chosenCharacter.data.depressed) {
     // Args: showResponse(character, depressed[, likesCategory])
     showResponse(game.gameData.chosenCharacter, false);
-    return;
+  } else if (game.gameData.chosenCharacter.data.likes.indexOf(game.gameData.chosenCategory.catName) > -1 || game.gameData.chosenCategory.catName === 'whatever') {
+    showResponse(game.gameData.chosenCharacter, true, true);
+    // game.gameData.clickCounter = 0;
+  } else {
+    showResponse(game.gameData.chosenCharacter, true, false);
+    // game.gameData.clickCounter = 0;
   }
+    
 
-  console.log(game.gameData.chosenCharacter.data.likes.indexOf(game.gameData.chosenCategory.catName) > -1 || game.gameData.chosenCategory.catName === 'whatever' ? showResponse(game.gameData.chosenCharacter, true, true) : showResponse(game.gameData.chosenCharacter, true, false));
 }
 
 function categoryBtnClick(category) {
@@ -301,6 +336,8 @@ function showTweets(character) {
   wand.anchor.set(0.5);
   wand.inputEnabled = true;
   wand.events.onInputDown.add(function(character) {
+    var fairySound = game.add.sound('fairy_wand', 0.5);
+    fairySound.play();
     game.state.start('stageTwo');
   });
 
