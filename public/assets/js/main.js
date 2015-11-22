@@ -397,7 +397,7 @@ function showResponse(character, depressed, likesCategory) {
         font: 'bold 48px fantasy',
         fill: 'yellow'
       };
-      var tryAgainText = game.add.text(400, 200, 'Nice job!', tryAgainStyle);
+      var tryAgainText = game.add.text(400, 150, 'Nice job!', tryAgainStyle);
       tryAgainText.anchor.set(0.5);
 
       var playAgain = game.add.button(400, 250, 'replay', function() {
