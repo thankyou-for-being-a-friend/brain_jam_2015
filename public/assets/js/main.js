@@ -19,13 +19,14 @@ var setup = {
     // load any needed images/data
     // Generic person placeholder
     game.load.image('person', 'assets/images/person.png');
-    // JUST RECTANGLES
-    game.load.image('cat1', 'assets/images/cat1.png');
-    game.load.image('cat2', 'assets/images/cat2.png');
-    game.load.image('cat3', 'assets/images/cat3.png');
-    game.load.image('cat4', 'assets/images/cat4.png');
-    game.load.image('cat5', 'assets/images/cat5.png');
-    game.load.image('cat6', 'assets/images/cat6.png');
+
+    // categories
+    game.load.image('politics', 'assets/images/giphy-politics.gif');
+    game.load.image('dogs', 'assets/images/giphy-dogs.gif');
+    game.load.image('celebrities', 'assets/images/giphy-celeb.gif');
+    game.load.image('cheetahs', 'assets/images/giphy-cheetah.gif');
+    game.load.image('missy elliot', 'assets/images/giphy-missy.gif');
+    game.load.image('robots', 'assets/images/giphy-robots.gif');
     // Indicators/cursors/etc
     game.load.spritesheet('wand', 'assets/images/magic_girl_wand.png', 128, 128, 1);
     game.load.image('indicator', 'assets/images/indicator.png');
@@ -134,12 +135,20 @@ var stageOne = {
 var stageTwo = {
   preload: function(stageOneMusic) {
     game.gameData.categories = [
-      "cats",
-      "puppies",
-      "bunnies",
-      "ducklings",
-      "whatever",
-      "whatever"
+      "politics",
+      "dogs",
+      "celebrities",
+      "cheetahs",
+      "missy elliot",
+      "robots"
+    ]
+    game.gameData.categoryNames = [
+      "Politics",
+      "Puppies",
+      "Celebs",
+      "Baby Cheetahs",
+      "Missy Elliot",
+      "Robots"
     ]
     game.gameData.stageOneMusic.fadeOut(1000);
     // Create group with high z-index to keep cursor on top
@@ -172,7 +181,7 @@ var stageTwo = {
     // 100 60 190
     // create six category indicators (alternate on odds)
     for (var i = 1, x = 40, y = 100; i < 7; i++) {
-      var category = game.add.button(x, y, 'cat' + i, categoryBtnClick);
+      var category = game.add.button(x, y, game.gameData.categories[i - 1], categoryBtnClick);
       category.catName = game.gameData.categories[i - 1];
       if (i % 2 === 0) {
         x = 40;
@@ -181,6 +190,8 @@ var stageTwo = {
         x += 100;
       }
       category.alpha = 0.5;
+      category.width = 75;
+      category.height = 75;
 
       category.inputEnabled = true;
       category.events.onInputOver.add(function(category) {
@@ -237,8 +248,9 @@ var stageTwo = {
 
 function animateSquare() {
   // Create new category-square image
-  var square = game.add.image(game.gameData.chosenCategory.position.x + 2, game.gameData.chosenCategory.position.y + 2, 'cat1');
-
+  var square = game.add.image(game.gameData.chosenCategory.position.x + 2, game.gameData.chosenCategory.position.y + 2, game.gameData.chosenCategory.catName);
+  square.height = 100;
+  square.width = 100;
   // tween it to the character's location
   var squareTween = game.add.tween(square)
   squareTween.to({
@@ -414,7 +426,6 @@ function showResponse(character, depressed, likesCategory) {
 function attackWithGif(character) {
   // Check to see if chosen character likes this gif!
   if (!game.gameData.chosenCharacter.data.depressed) {
-    // Args: showResponse(character, depressed[, likesCategory])
     showResponse(character, false);
   } else if (game.gameData.chosenCharacter.data.likes.indexOf(game.gameData.chosenCategory.catName) > -1 || game.gameData.chosenCategory.catName === 'whatever') {
     showResponse(character, true, true);

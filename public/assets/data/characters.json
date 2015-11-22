@@ -8,7 +8,7 @@
 		"y": 10
 	},
 	"twitterHandle": "dorothyzbornak",
-	"likes": ["cats", "Tom Hiddleston"],
+	"likes": ["politics", "robots", "cheetahs"],
 	"avatarImg": "assets/images/dorothyTest.jpeg",
 	"bio": "This is Dorothy's bio text.",
 	"tweets": {
@@ -47,7 +47,7 @@
 		"y": 10
 	},
 	"twitterHandle": "roseycheeks",
-	"likes": ["puppies", "Chris Hemsworth"],
+	"likes": ["dogs", "robots", "cheetahs"],
 	"avatarImg": "assets/images/roseTest.jpeg",
 	"bio": "This is Rose's bio text.",
 	"tweets": {
@@ -85,7 +85,7 @@
 		"y": 10
 	},
 	"twitterHandle": "foxyroxymoxy_5",
-	"likes": ["ducklings", "Chris Evans"],
+	"likes": ["celebrities", "robots", "cheetahs"],
 	"avatarImg": "assets/images/blancheTest.jpeg",
 	"bio": "This is Blanche's bio text.",
 	"tweets": {
@@ -123,7 +123,7 @@
 		"y": 10
 	},
 	"twitterHandle": "sicilyrocket",
-	"likes": ["bunnies", "Scarlett Johannson"],
+	"likes": ["missy elliot", "robots", "cheetahs"],
 	"avatarImg": "assets/images/sophiaTest.jpeg",
 	"bio": "This is Sophia's bio text.",
 	"tweets": {
