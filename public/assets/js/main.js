@@ -41,11 +41,18 @@ var setup = {
     game.load.image('blanche', 'assets/images/gg1/GG1.png');
     game.load.image('dorothy', 'assets/images/gg2/GG2.png');
     game.load.image('rose', 'assets/images/gg3/gg3.png');
+
     // Lady sprites <3
     game.load.spritesheet('blanche_sprite', 'assets/images/gg1/gg1_sprite.png', 559, 625, 2);
     game.load.spritesheet('dorothy_sprite', 'assets/images/gg2/gg2_sprite.png', 343, 660, 2);
     game.load.spritesheet('rose_sprite', 'assets/images/gg3/gg3_sprite.png', 409, 647, 2);
     game.load.spritesheet('person_sprite', 'assets/images/person_sprite.png', 237, 519, 2);
+    // lady win music
+    game.load.audio('win_blanche', 'assets/audio/BrainJam_StartTheme_Entertainment_Tonight.mp3');
+    game.load.audio('win_dorothy', 'assets/audio/BrainJam_WinTheme_FoxNews.mp3');
+    game.load.audio('win_rose', 'assets/audio/BrainJam_WinTheme_KeepingUp.mp3');
+    game.load.audio('win_person', 'assets/audio/BrainJam_WinTheme_MissyElliot.mp3');
+
     //sfx
     game.load.audio('fairy_wand', 'assets/audio/BrainJam_Fairy_Wand.wav');
     game.load.audio('pop', 'assets/audio/BrainJam_Pop.wav');
@@ -85,8 +92,8 @@ var stageOne = {
   preload: function() {
   },
   create: function() {
-    if (game.gameData.stageTwoMusic) {
-      game.gameData.stageTwoMusic.fadeOut(1000);
+    if (game.gameData.winMusic) {
+      game.gameData.winMusic.fadeOut(1000);
     }
     // Play stage one music!
     game.gameData.stageOneMusic = game.add.audio('stage_one');
@@ -183,12 +190,24 @@ var stageTwo = {
     for (var i = 1, x = 40, y = 100; i < 7; i++) {
       var category = game.add.button(x, y, game.gameData.categories[i - 1], categoryBtnClick);
       category.catName = game.gameData.categories[i - 1];
+      var categoryTextStyle = {
+        font: 'bold 14px Helvetica',
+        fill: '#fff',
+        wordWrap: true,
+        wordWrapWidth: 100,
+        align: 'center'
+      }
+      var categoryText = game.add.text(x + 40, y + 100, game.gameData.categoryNames[i - 1], categoryTextStyle);
+      categoryText.anchor.set(0.5);
       if (i % 2 === 0) {
         x = 40;
-        y += 100;
+        y += 150;
       } else {
         x += 100;
       }
+
+
+
       category.alpha = 0.5;
       category.width = 75;
       category.height = 75;
@@ -310,7 +329,7 @@ function showResponse(character, depressed, likesCategory) {
 
       // Create new text node - Try again!
       var tryAgainStyle = {
-        font: 'bold 48px fantasy',
+        font: 'bold 48px Helvetica',
         fill: 'yellow'
       };
       var tryAgainText = game.add.text(400, 250, 'Try Again! <3', tryAgainStyle);
@@ -352,7 +371,7 @@ function showResponse(character, depressed, likesCategory) {
 
       // Create new text node - Try again!
       var tryAgainStyle = {
-        font: 'bold 48px fantasy',
+        font: 'bold 48px Helvetica',
         fill: 'yellow'
       };
       var tryAgainText = game.add.text(400, 250, 'Try Again! <3', tryAgainStyle);
@@ -381,7 +400,6 @@ function showResponse(character, depressed, likesCategory) {
     // If your character is not depressed AND you chose the right gif... YOU WIN YAY
   } else {
     // For later:
-    // var attackMusic = game.add.audio('attack' + game.gameData.chosenCategory.catName);
     var attackMusic = game.add.audio('attack');
     attackMusic.play();
     var shootGifsTimer = game.time.events.repeat(100, 20, animateSquare, this);
@@ -389,7 +407,9 @@ function showResponse(character, depressed, likesCategory) {
     // After timer event completes looping, display "wrong gif" fail message
     // Note to self - refactor, do this with a callback
     game.time.events.add(3000, function(attackMusic) {
-
+      game.gameData.stageTwoMusic.fadeOut(1000);
+      game.gameData.winMusic = game.add.audio('win_' + game.gameData.chosenCharacter.data.imgKey);
+      game.gameData.winMusic.play();
       //create twitter bg img
       var twitterBg = game.add.image(400, 450, 'tweet_box');
       twitterBg.anchor.set(0.5);
@@ -406,7 +426,7 @@ function showResponse(character, depressed, likesCategory) {
 
       // Create new text node - Try again!
       var tryAgainStyle = {
-        font: 'bold 48px fantasy',
+        font: 'bold 48px Helvetica',
         fill: 'yellow'
       };
       var tryAgainText = game.add.text(400, 150, 'Nice job!', tryAgainStyle);
