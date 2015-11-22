@@ -14,22 +14,31 @@ var setup = {
   preload: function() {
     // load any needed images/data
     game.load.image('person', 'assets/images/person.png');
+
     game.load.image('cat1', 'assets/images/cat1.png');
     game.load.image('cat2', 'assets/images/cat2.png');
     game.load.image('cat3', 'assets/images/cat3.png');
     game.load.image('cat4', 'assets/images/cat4.png');
     game.load.image('cat5', 'assets/images/cat5.png');
     game.load.image('cat6', 'assets/images/cat6.png');
+    
+    game.load.spritesheet('wand', 'assets/images/magic_girl_wand.png', 128, 128, 1);
+    game.load.image('indicator', 'assets/images/indicator.png');
+    
+    game.load.image('modal_bg', 'assets/images/modal_bg.png');
+    game.load.image('tweet_bg', 'assets/images/tweet_bg.png');
     game.load.image('left-menu', 'assets/images/left_menu.png');
+    
     game.load.image('blanche', 'assets/images/gg1/GG1.png');
     game.load.image('dorothy', 'assets/images/gg2/GG2.png');
-    game.load.spritesheet('wand', 'assets/images/magic_girl_wand.png', 128, 128, 1);
+    
     game.load.spritesheet('blanche_sprite', 'assets/images/gg1/gg1_sprite.png', 559, 625, 2);
     game.load.spritesheet('dorothy_sprite', 'assets/images/gg2/gg2_sprite.png', 343, 660, 2);
     game.load.spritesheet('person_sprite', 'assets/images/person_sprite.png', 237, 519, 2);
-    game.load.image('modal_bg', 'assets/images/modal_bg.png');
-    game.load.image('tweet_bg', 'assets/images/tweet_bg.png');
-    game.load.image('indicator', 'assets/images/indicator.png');
+    
+    game.load.audio('fairy_wand', 'assets/audio/BrainJam_Fairy_Wand.wav');
+    game.load.audio('pop', 'assets/audio/BrainJam_Pop.wav');
+
     game.load.text('char_data', 'assets/data/characters.json');
     game.gameData = {};
   },
@@ -91,7 +100,16 @@ var stageOne = {
 }
 
 var stageTwo = {
-  preload: function() {},
+  preload: function() {
+    game.gameData.categories = [
+      "cats",
+      "puppies",
+      "bunnies",
+      "ducklings",
+      "whatever",
+      "whatever"
+    ]
+  },
   create: function() {
     // Create the game board!
     var leftMenuGroup = game.add.group();
@@ -113,9 +131,10 @@ var stageTwo = {
 
     gifCategories = game.add.group();
     // 100 60 190
-    // create six category indicators (isOdd to alternate)
+    // create six category indicators (alternate on odds)
     for (var i = 1, x = 40, y = 100; i < 7; i++) {
-        var category = game.add.button(x, y, 'cat' + i, categoryBtnClick);
+      var category = game.add.button(x, y, 'cat' + i, categoryBtnClick);
+      category.catName = game.gameData.categories[i - 1];
       if (i % 2 === 0) {
         x = 40;
         y += 100;
@@ -157,9 +176,7 @@ var stageTwo = {
       character.frame = 0;
     });
     // Click handler to adjust happiness level/click counter
-    currentCharacter.events.onInputDown.add(function(character) {
-      console.log('Check to see what you\'re throwing at me.');
-    });
+    currentCharacter.events.onInputDown.add(attackWithGif);
     // render helper text (click [charname] to send gifs)
     // Create cursor img that follows mouse
     game.gameData.wand = game.add.sprite(game.width - 75, 75, 'wand');
@@ -173,14 +190,23 @@ var stageTwo = {
 }
 
 // ---------- Function Definitions ---------- 
-// Todo - modularize
+// Todo - get these outta this file IT'S SO MESSY OH GAWD
+
+function attackWithGif(character) {
+  var fairySound = game.add.sound('fairy_wand', 0.5);
+  fairySound.play();
+  // Check to see if chosen character likes this gif!
+  if (!game.gameData.chosenCharacter.data.depressed) {
+    console.log('I\'m not even sad.');
+    return;
+  }
+  console.log(game.gameData.chosenCharacter.data.likes.indexOf(game.gameData.chosenCategory.catName) > -1 || game.gameData.chosenCategory.catName === 'whatever' ? "I like that!" : "I don't like that.");
+}
 
 function categoryBtnClick(category) {
-  console.log(game.gameData.chosenCategory.position)
   game.gameData.chosenCategory.alpha = 0.5;
   game.gameData.chosenCategory = category;
   game.gameData.chosenCategory.alpha = 1;
-  console.log(game.gameData.chosenCategory.position)
 }
 
 // Add single tweet to char's current tweets
@@ -206,8 +232,11 @@ function addTweet(character) {
 }
 // Show new tweet indicator
 function showIndicator(character) {
-  character.indicator.alpha = 1;
-  console.log('New tweet from ' + character.data.name + '!')
+  if (character.indicator.alpha != 1) {
+    character.indicator.alpha = 1;
+    game.add.audio('pop', 0.25).play();
+  }
+  console.log('New tweet from ' + character.data.name + '!');
 }
 
 
